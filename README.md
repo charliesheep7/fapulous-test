@@ -50,9 +50,9 @@ pnpm android
 
 ## 🔄 Development Workflow
 
-This project uses **Husky Git Hooks** to enforce code quality and conventional commits. Follow this workflow for daily development:
+This project uses **Husky Git Hooks** to enforce code quality and conventional commits. Follow this workflow for solo development:
 
-### Daily Workflow
+### Daily Workflow (Solo Development)
 
 ```bash
 # 1. Start from main branch and get latest changes
@@ -72,10 +72,49 @@ git add .
 # 4. Commit with conventional format (hooks will validate)
 git commit -m "feat(auth): implement user login functionality"
 
+# 5. Switch back to main and merge your changes
+git checkout main
+git merge feat/your-feature-name
+
+# 6. Push the updated main branch to GitHub
+git push origin main
+
+# 7. Clean up by deleting the feature branch (optional)
+git branch -d feat/your-feature-name
+git push origin --delete feat/your-feature-name
+```
+
+### Quick Workflow for Small Changes
+
+For documentation updates and small fixes, you can use this streamlined approach:
+
+```bash
+# 1. Create feature branch from main
+git checkout main
+git checkout -b docs/quick-update
+
+# 2. Make changes, commit, and merge in one flow
+git add .
+git commit -m "docs: update README section"
+git checkout main
+git merge docs/quick-update
+git push origin main
+
+# 3. Clean up
+git branch -d docs/quick-update
+```
+
+### Alternative: Pull Request Workflow (For Future Collaboration)
+
+If you later work with other developers, you can switch to Pull Requests:
+
+```bash
+# Follow steps 1-4 from Daily Workflow, then:
 # 5. Push your feature branch
 git push -u origin feat/your-feature-name
 
 # 6. Create a Pull Request on GitHub to merge into main
+# 7. Review and merge through GitHub interface
 ```
 
 ### Commit Message Format
