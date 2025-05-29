@@ -7,7 +7,7 @@ You are given a React Native component and you are tasked with writing unit test
 Follow the following steps one by one:
 
 1. Component Analysis:
-   Before writing tests, analyze your component by answering these questions:
+   Before writing test, analyze your component by answering these questions:
 
    - What is the primary purpose of this component?
    - What props does it accept?
