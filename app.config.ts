@@ -49,7 +49,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#2E3C4B',
+      backgroundColor: '#45A1CF', // Deep Sky Blue instead of charcoal
     },
     package: Env.PACKAGE,
   },
@@ -61,7 +61,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-splash-screen',
       {
-        backgroundColor: '#2E3C4B',
+        backgroundColor: '#45A1CF', // Deep Sky Blue background
         image: './assets/splash-icon.png',
         imageWidth: 150,
       },
