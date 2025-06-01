@@ -1,35 +1,38 @@
-import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import type { Post } from '@/api';
-import { usePosts } from '@/api';
-import { Card } from '@/components/card';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
 
-export default function Feed() {
-  const { data, isPending, isError } = usePosts();
-  const renderItem = React.useCallback(
-    ({ item }: { item: Post }) => <Card {...item} />,
-    []
-  );
+export default function Fapulous() {
+  const handleNutPress = () => {
+    // TODO: Add your desired action here
+    console.log('User pressed I just nut button');
+  };
 
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
   return (
-    <View className="flex-1 ">
+    <View className="flex-1">
       <FocusAwareStatusBar />
-      <FlashList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => `item-${index}`}
-        ListEmptyComponent={<EmptyList isLoading={isPending} />}
-        estimatedItemSize={300}
-      />
+
+      {/* Gradient-like background using layered views */}
+      <View className="absolute inset-0 bg-background-accent" />
+      <View className="absolute inset-0 bg-primary-100/30" />
+
+      {/* Main content */}
+      <View className="flex-1 items-center justify-center px-8">
+        {/* Enhanced headline with better typography */}
+        <Text className="mb-16 px-4 text-center text-4xl font-black leading-tight tracking-wide text-text-primary dark:text-white">
+          Ready when you are
+        </Text>
+
+        {/* Elegant enhanced button */}
+        <Button
+          label="I just nut"
+          onPress={handleNutPress}
+          variant="outline"
+          size="lg"
+          className="h-16 min-w-64 rounded-full border-2 border-white/30 bg-white/95 shadow-lg shadow-primary-200/50"
+          textClassName="text-primary-700 dark:text-primary-600 font-semibold text-xl tracking-wide"
+        />
+      </View>
     </View>
   );
 }
