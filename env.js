@@ -79,6 +79,8 @@ const client = z.object({
   VERSION: z.string(),
 
   // ADD YOUR CLIENT ENV VARS HERE
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_ANON_KEY: z.string(),
   API_URL: z.string(),
   VAR_NUMBER: z.number(),
   VAR_BOOL: z.boolean(),
@@ -88,6 +90,7 @@ const buildTime = z.object({
   EXPO_ACCOUNT_OWNER: z.string(),
   EAS_PROJECT_ID: z.string(),
   // ADD YOUR BUILD TIME ENV VARS HERE
+  SUPABASE_SERVICE_ROLE_KEY: z.string(),
   SECRET_KEY: z.string(),
 });
 
@@ -103,6 +106,8 @@ const _clientEnv = {
   VERSION: packageJSON.version,
 
   // ADD YOUR ENV VARS HERE TOO
+  SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   API_URL: process.env.API_URL,
   VAR_NUMBER: Number(process.env.VAR_NUMBER),
   VAR_BOOL: process.env.VAR_BOOL === 'true',
@@ -115,6 +120,7 @@ const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
   EAS_PROJECT_ID,
   // ADD YOUR ENV VARS HERE TOO
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   SECRET_KEY: process.env.SECRET_KEY,
 };
 
