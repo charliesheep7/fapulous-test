@@ -8,7 +8,6 @@ import * as z from 'zod';
 import { Button, ControlledInput, Text, View } from '@/components/ui';
 
 const schema = z.object({
-  name: z.string().optional(),
   email: z
     .string({
       required_error: 'Email is required',
@@ -51,30 +50,23 @@ export const LoginForm = ({
           </Text>
 
           <Text className="mb-6 max-w-xs text-center text-gray-500">
-            Welcome! 👋 This is a demo login screen! Feel free to use any email
-            and password to sign in and try it out.
+            Welcome back! Sign in to your account to continue.
           </Text>
         </View>
-
-        <ControlledInput
-          testID="name"
-          control={control}
-          name="name"
-          label="Name"
-        />
 
         <ControlledInput
           testID="email-input"
           control={control}
           name="email"
           label="Email"
+          placeholder="Enter your email"
         />
         <ControlledInput
           testID="password-input"
           control={control}
           name="password"
           label="Password"
-          placeholder="***"
+          placeholder="Enter your password"
           secureTextEntry={true}
         />
         <Button
