@@ -25,9 +25,13 @@ export type FormType = z.infer<typeof schema>;
 
 export type LoginFormProps = {
   onSubmit?: SubmitHandler<FormType>;
+  isLoading?: boolean;
 };
 
-export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
+export const LoginForm = ({
+  onSubmit = () => {},
+  isLoading = false,
+}: LoginFormProps) => {
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
@@ -75,8 +79,9 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
         />
         <Button
           testID="login-button"
-          label="Login"
+          label={isLoading ? 'Signing In...' : 'Login'}
           onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}
         />
       </View>
     </KeyboardAvoidingView>
