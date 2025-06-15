@@ -1,11 +1,11 @@
+import { router } from 'expo-router';
 import React from 'react';
 
 import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
 
 export default function Fapulous() {
-  const handleNutPress = () => {
-    // TODO: Add your desired action here
-    console.log('User pressed I just nut button');
+  const handleStartPress = () => {
+    router.push('/(app)/mood-selection');
   };
 
   return (
@@ -25,8 +25,8 @@ export default function Fapulous() {
 
         {/* Elegant enhanced button */}
         <Button
-          label="I just nut"
-          onPress={handleNutPress}
+          label="Start feeling better"
+          onPress={handleStartPress}
           variant="outline"
           size="lg"
           className="h-16 min-w-64 rounded-full border-2 border-white/30 bg-white/95 shadow-lg shadow-primary-200/50"
