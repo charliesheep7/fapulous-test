@@ -58,6 +58,13 @@ export default function TabLayout() {
           tabBarButtonTestID: 'settings-tab',
         }}
       />
+      <Tabs.Screen
+        name="mood-selection"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }
