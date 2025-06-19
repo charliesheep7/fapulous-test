@@ -37,8 +37,8 @@ require('dotenv').config({
 const BUNDLE_ID = 'com.fapulous'; // ios bundle id
 const PACKAGE = 'com.fapulous'; // android package name
 const NAME = 'Fapulous'; // app name
-const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // eas project id
+const EXPO_ACCOUNT_OWNER = 'sheepcharlie'; // expo account owner
+const EAS_PROJECT_ID = '371ca1de-f334-44a9-a518-297306159022'; // eas project id
 const SCHEME = 'Fapulous'; // app scheme
 
 /**
@@ -84,6 +84,7 @@ const client = z.object({
   API_URL: z.string(),
   VAR_NUMBER: z.number(),
   VAR_BOOL: z.boolean(),
+  OPENAI_API_KEY: z.string(),
 });
 
 const buildTime = z.object({
@@ -111,6 +112,7 @@ const _clientEnv = {
   API_URL: process.env.API_URL,
   VAR_NUMBER: Number(process.env.VAR_NUMBER),
   VAR_BOOL: process.env.VAR_BOOL === 'true',
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 };
 
 /**

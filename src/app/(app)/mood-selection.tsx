@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import * as React from 'react';
 
 import { MoodSelector } from '@/components/mood-selector';
@@ -9,16 +10,25 @@ import {
   View,
 } from '@/components/ui';
 import { useMoodStore } from '@/lib/stores/mood-store';
+import { useSessionStore } from '@/lib/stores/session-store';
 
 export default function MoodSelectionPage() {
   const { isSelectionValid, selectedMoods } = useMoodStore();
+  const { createSession } = useSessionStore();
 
   const handleContinue = () => {
     if (!isSelectionValid) return;
 
-    // TODO: Navigate to chat session with selected moods
-    console.log('Continue with moods:', selectedMoods);
-    // router.push(`/chat/${sessionId}`);
+    try {
+      // Create a new session with selected moods
+      createSession(selectedMoods);
+
+      // Navigate to session intro screen
+      router.push('/(app)/session-intro');
+    } catch (error) {
+      console.error('Failed to create session:', error);
+      // TODO: Show error message to user
+    }
   };
 
   return (
