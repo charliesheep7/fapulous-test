@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import * as React from 'react';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import {
   Button,
@@ -28,22 +29,41 @@ function AffirmationNotFound() {
   );
 }
 
-function AffirmationPlaceholder() {
+function AffirmationCard({ affirmation }: { affirmation: string }) {
   return (
     <View className="flex-1 items-center justify-center px-6">
-      <Text className="mb-4 text-center text-2xl font-bold text-text-primary dark:text-white">
-        Affirmation Display
-      </Text>
-      <Text className="mb-8 text-center text-gray-600 dark:text-gray-400">
-        This will be implemented in Phase 4
-      </Text>
-
-      <View className="w-full rounded-lg bg-primary-50 p-6 dark:bg-primary-900/20">
-        <Text className="text-center text-lg text-primary-700 dark:text-primary-300">
-          "Your personalized affirmation will appear here after completing a
-          session"
+      <Animated.View
+        entering={FadeInUp.delay(200).duration(800)}
+        className="mb-8"
+      >
+        <Text className="text-center text-2xl font-bold text-text-primary dark:text-white">
+          Your Affirmation
         </Text>
-      </View>
+        <Text className="mt-2 text-center text-gray-600 dark:text-gray-400">
+          A personal message for you
+        </Text>
+      </Animated.View>
+
+      <Animated.View
+        entering={FadeInDown.delay(400).duration(800)}
+        className="w-full rounded-2xl bg-primary-50 p-8 shadow-sm dark:bg-primary-900/20"
+      >
+        <View className="items-center">
+          <Text className="mb-4 text-4xl">💝</Text>
+          <Text className="text-center text-lg leading-6 text-primary-700 dark:text-primary-300">
+            {affirmation}
+          </Text>
+        </View>
+      </Animated.View>
+
+      <Animated.View
+        entering={FadeInUp.delay(600).duration(600)}
+        className="mt-8"
+      >
+        <Text className="text-center text-sm text-gray-500 dark:text-gray-400">
+          Take a moment to let this sink in
+        </Text>
+      </Animated.View>
     </View>
   );
 }
@@ -56,7 +76,7 @@ export default function AffirmationPage() {
     router.push('/(app)/');
   };
 
-  if (!currentSession) {
+  if (!currentSession || !currentSession.affirmation) {
     return <AffirmationNotFound />;
   }
 
@@ -64,11 +84,14 @@ export default function AffirmationPage() {
     <SafeAreaView className="bg-background flex-1">
       <FocusAwareStatusBar />
 
-      <AffirmationPlaceholder />
+      <AffirmationCard affirmation={currentSession.affirmation} />
 
-      <View className="p-6">
+      <Animated.View
+        entering={FadeInUp.delay(800).duration(600)}
+        className="p-6"
+      >
         <Button label="Finish Session" onPress={handleFinish} size="lg" />
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
