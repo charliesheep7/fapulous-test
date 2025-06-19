@@ -12,23 +12,20 @@ import { useAuth, useIsFirstTime } from '@/lib';
 export default function TabLayout() {
   const status = useAuth.use.status();
   const [isFirstTime] = useIsFirstTime();
+
   const hideSplash = useCallback(async () => {
     await SplashScreen.hideAsync();
   }, []);
+
   useEffect(() => {
     if (status !== 'idle') {
-      setTimeout(() => {
-        hideSplash();
-      }, 1000);
+      setTimeout(() => hideSplash(), 1000);
     }
   }, [hideSplash, status]);
 
-  if (isFirstTime) {
-    return <Redirect href="/onboarding" />;
-  }
-  if (status === 'signOut') {
-    return <Redirect href="/login" />;
-  }
+  if (isFirstTime) return <Redirect href="/onboarding" />;
+  if (status === 'signOut') return <Redirect href="/login" />;
+
   return (
     <Tabs>
       <Tabs.Screen
@@ -39,7 +36,6 @@ export default function TabLayout() {
           tabBarButtonTestID: 'fapulous-tab',
         }}
       />
-
       <Tabs.Screen
         name="style"
         options={{
@@ -60,10 +56,16 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="mood-selection"
-        options={{
-          href: null,
-          headerShown: false,
-        }}
+        options={{ href: null, headerShown: false }}
+      />
+      <Tabs.Screen
+        name="session-intro"
+        options={{ href: null, headerShown: false }}
+      />
+      <Tabs.Screen name="chat" options={{ href: null, headerShown: false }} />
+      <Tabs.Screen
+        name="affirmation"
+        options={{ href: null, headerShown: false }}
       />
     </Tabs>
   );

@@ -1,0 +1,539 @@
+ FAPULOUS AI - MICRO-THERAPY FEATURE - PRODUCT REQUIREMENTS DOCUMENT
+
+================================================================================
+
+1. OVERVIEW & GOALS
+
+Product Vision
+--------------
+Fapulous AI provides immediate emotional support for men experiencing guilt, shame, or emotional heaviness after masturbation through personalized, peer-like conversations with an AI mentor.
+
+Primary Goals
+-------------
+- Provide immediate, judgment-free emotional support post-masturbation
+- Help users process shame and guilt in a healthy, compassionate way
+- Create a safe space for users to feel understood and less alone
+- Guide users toward self-compassion and emotional regulation
+- Generate meaningful affirmations based on the conversation
+
+Success Criteria
+----------------
+- Users complete full micro-therapy sessions (4-5 exchanges + wrap-up)
+- Users report feeling less shame/guilt after sessions
+- High user retention within daily session limits
+- Users save and engage with generated affirmations
+
+================================================================================
+
+2. TARGET AUDIENCE & USER CONTEXT
+
+Primary User
+------------
+Men who have just masturbated and are experiencing:
+- Guilt or shame about the act
+- Emotional heaviness or regret
+- Need for immediate emotional support
+- Desire to process feelings without judgment
+
+User State Upon Entry
+---------------------
+- Recently completed masturbation
+- Experiencing negative emotions
+- Seeking quick, private emotional support
+- May be in vulnerable emotional state
+
+================================================================================
+
+3. DETAILED FEATURE REQUIREMENTS
+
+3.1 Session Introduction Screen
+-------------------------------
+Purpose: Gentle transition from mood selection to supportive conversation
+
+Requirements:
+- Welcoming message: "I have this micro-therapy to make you feel a bit better."
+- Single CTA button: "Let's go"
+- Calm, non-judgmental visual design
+- Brief loading/preparation moment
+
+Technical Notes:
+- Route: /(app)/session-intro
+- Maintains mood context from previous screen
+- Initializes session with selected moods
+
+3.2 Chat Interface
+------------------
+Purpose: Main conversation interface with Fapulous Mentor
+
+Core Requirements:
+- Default State: Two prominent buttons at bottom - Text chat icon and Microphone icon
+- Conversation Display: User/AI message bubbles with timestamps
+- Session Progress: Subtle indicator showing conversation progress (not prominently displayed)
+- Communication Mode Selection: Text OR Voice for entire session (cannot switch mid-session)
+
+Text Mode Interface:
+- Tap text icon → Keyboard opens
+- Standard text input field with send button
+- Message bubbles: User (right, branded color), AI (left, neutral)
+- Auto-scroll to latest messages
+- Character limits if needed
+
+Voice Mode Interface:
+- Tap microphone → Enter recording session
+- Recording state: Red stop button with audio waveform visualization
+- Real-time audio wave feedback while user speaks
+- AI responses play automatically
+- Visual indicators for recording/processing/playing states
+
+AI Conversation Behavior:
+- Persona: "Fapulous Mentor" - warm, peer-like friend (NOT therapist)
+- Conversation Length: 4-5 user-AI exchanges
+- Round 6: Wrap-up + mention affirmation coming (no new questions)
+- Tone: Casual, emotionally warm, understanding
+- Approach: Acknowledge masturbation naturally, shift from shame to compassion
+
+3.3 Affirmation Generation & Display
+------------------------------------
+Purpose: Provide meaningful conclusion with personalized affirmation
+
+Requirements:
+- Automatically triggered after conversation wrap-up
+- Generate affirmation based on:
+  * User's mood selection
+  * Conversation content and themes
+  * Fapulous Mentor's assessment of user's needs
+- Display in shareable card format
+- Save functionality only (no social sharing for privacy)
+
+Affirmation Examples (from system prompt):
+- "You don't need to earn rest or comfort. You're allowed to start again."
+- "That moment's over. Now you decide what the next one looks like."
+- "It's not the end. It's a data point. You're still in this."
+
+================================================================================
+
+4. USER EXPERIENCE FLOW
+
+4.1 Complete User Journey
+-------------------------
+Mood Selection → Session Intro → Communication Mode → Conversation (4-5 exchanges) → Wrap-up → Affirmation
+
+4.2 Detailed Flow
+-----------------
+
+Step 1: Post-Action Context
+- User has just masturbated and is experiencing negative emotions
+- Opens app and selects current emotional state
+
+Step 2: Session Introduction
+- Gentle, supportive introduction message
+- "Let's go" button to begin session
+- Generate session ID and prepare AI context
+
+Step 3: Communication Mode Selection
+- Present two clear options: Text or Voice
+- Selection determines entire session mode
+- Cannot change mid-session
+
+Step 4: Fapulous Mentor Conversation
+- AI initiates with understanding, non-judgmental tone
+- 4-5 natural exchanges focused on:
+  * Acknowledging what just happened
+  * Understanding user's emotional state
+  * Gentle reframing and compassion
+  * Small reflective actions or thoughts
+- Round 6: Gentle wrap-up + transition to affirmation
+
+Step 5: Affirmation Generation
+- AI generates personalized affirmation
+- Beautiful, shareable card display
+- Save to device functionality
+
+Step 6: Session End
+- Return to main app
+- Session counted against daily limit
+
+================================================================================
+
+5. TECHNICAL REQUIREMENTS
+
+5.1 System Prompts
+------------------
+
+Fapulous Mentor System Prompt:
+
+You are the "Fapulous Mentor," a warm, intuitive, peer-like friend that supports users *specifically after they've masturbated* and are feeling guilt, shame, or emotional heaviness. You are NOT a therapist or coach — you're like a wiser, chill friend who *gets it* and helps them feel less alone.
+
+Your job is to hold a short, natural micro-conversation (4–5 exchanges). Don't follow a rigid script — just flow like a real human who listens well, senses their mood, and responds with care.
+
+Your goals during this chat are:
+- To help the user feel seen, not judged.
+- To acknowledge the fact that they just masturbated — naturally and nonchalantly.
+- To gently shift their focus from shame to understanding or self-compassion.
+- To guide them into a small reflection or soothing action (mental or physical).
+
+Tone:
+- Casual, emotionally warm, and friendly — like texting with someone who genuinely cares.
+- You can be a bit playful or wry *if* the user's tone invites it.
+- Avoid robotic or generic phrases like "you are valid" unless grounded in something real.
+
+Tactics (use naturally, not in order):
+- Acknowledge the action directly
+- Mirror their mood and word choices to show understanding.
+- Offer gentle reframes like: "Maybe this was your brain just asking for a break — not the end of the world."
+- Invite tiny actions that shift their state that fits users' description, for example, "Wanna stand up and stretch a sec?" 
+- Don't force the conversation — allow silence, short replies, or venting.
+
+Good examples of final affirmation lines:
+- "You don't need to earn rest or comfort. You're allowed to start again."
+- "That moment's over. Now you decide what the next one looks like."
+- "It's not the end. It's a data point. You're still in this."
+
+Never:
+- Moralise, analyse user history, or imply anything is inherently wrong with masturbation.
+- Use sexual descriptions or give advice about technique, urges, or health.
+- Assume the user wants to stop masturbating unless they say so.
+- Push too hard for emotional depth — this is light support, not therapy.
+
+Your job is not to fix them. Just show up, reflect, and help them take the next breath with a little more ease. Trust the flow.
+
+5.2 API Integration
+-------------------
+
+Text Mode: 
+- OpenAI Chat Completions API with gpt-4o-mini
+- Direct HTTP calls from client
+- System prompt + mood context + conversation history
+
+Voice Mode:
+- OpenAI Realtime API with gpt-4o-realtime-preview
+- WebSocket connection
+- System prompt configured for voice interaction
+- Audio format: OpenAI defaults
+
+5.3 Session Management
+----------------------
+
+Session Limits:
+- No daily session limits for MVP
+- No session duration limits for MVP
+- Session ends immediately if user pauses, backgrounds app, or exits
+- No session recovery or resumption
+
+Data Storage (Local MVP):
+- Session metadata (count, timestamps)
+- Generated affirmations for user reference
+- Daily session count tracking
+
+5.4 Data Models
+---------------
+
+FapulousSession:
+- id: string
+- userId: string
+- selectedMoods: MoodType[]
+- communicationMode: 'text' | 'voice'
+- messages: ChatMessage[]
+- currentRound: number
+- status: 'active' | 'completed' | 'abandoned'
+- affirmation?: string
+- createdAt: Date
+- completedAt?: Date
+- sessionNumber: number (1-3 for daily limit)
+
+ChatMessage:
+- id: string
+- sessionId: string
+- role: 'user' | 'assistant'
+- content: string
+- messageType: 'text' | 'audio'
+- roundNumber: number
+- timestamp: Date
+
+DailySessionTracker:
+- date: string (YYYY-MM-DD)
+- sessionCount: number
+- lastSessionAt: Date
+
+================================================================================
+
+6. SESSION BEHAVIOR & LIMITS
+
+6.1 Daily Limits
+----------------
+- Maximum 3 sessions per day
+- Counter resets at midnight local time
+- Clear indication when daily limit reached
+- Encourage return tomorrow
+
+6.2 Session Duration
+--------------------
+- No session duration limits for MVP
+- Sessions continue until user completes or exits
+
+6.3 Session Interruption
+-------------------------
+- App backgrounding: Session ends immediately
+- Mid-session exit: Session marked as abandoned
+- No pause/resume functionality
+- No session recovery - user must start fresh
+
+================================================================================
+
+7. PRIVACY & SENSITIVITY CONSIDERATIONS
+
+7.1 Content Sensitivity
+------------------------
+- No explicit sexual content in conversations
+- Focus on emotional support, not sexual advice
+- Maintain appropriate boundaries around topic
+- No judgment about masturbation itself
+
+7.2 Data Privacy
+----------------
+- Conversations stored locally only (for MVP)
+- No sharing of session content
+- Affirmations can be saved privately
+- No social sharing features for privacy protection
+
+7.3 Crisis Handling
+-------------------
+- Question: How should AI handle crisis situations?
+- References to self-harm or severe depression
+- Appropriate escalation or resource referrals
+
+================================================================================
+
+8. UI/UX SPECIFICATIONS
+
+8.1 Visual Design
+-----------------
+Based on provided screenshots:
+- Clean, minimal interface
+- Calming color palette
+- Default state: Text and mic buttons centered at bottom
+- Text mode: Keyboard overlay, standard chat bubbles
+- Voice mode: Recording interface with waveform visualization
+
+8.2 Audio Visual Feedback
+--------------------------
+- Real-time waveform during recording
+- Clear recording state indicators
+- Processing/thinking states for AI responses
+- Audio playback controls and status
+
+8.3 Accessibility
+-----------------
+- Screen reader support for all interface elements
+- Voice commands for navigation
+- High contrast options
+- Text size adjustability
+
+================================================================================
+
+9. IMPLEMENTATION PHASES
+
+Phase 1: Foundation (Week 1)
+----------------------------
+- Session introduction screen
+- Basic chat interface (UI only)
+- Communication mode selection
+- Session state management and daily limits
+
+Phase 2: Text Implementation (Week 2)
+-------------------------------------
+- OpenAI text API integration with Fapulous Mentor prompt
+- Message handling and conversation flow
+- Round counting and session completion
+- Basic error handling
+
+Phase 3: Voice Implementation (Week 3)
+--------------------------------------
+- Audio permissions and recording
+- WebSocket connection to OpenAI Realtime API
+- Audio waveform visualization
+- Voice session management
+
+Phase 4: Affirmation System (Week 4)
+------------------------------------
+- Affirmation generation based on session
+- Affirmation card UI and display
+- Save functionality
+- Session completion flow
+
+Phase 5: Polish & Edge Cases (Week 5)
+-------------------------------------
+- Session interruption handling
+- Daily limit enforcement
+- Error scenarios and fallbacks
+- Performance optimization
+
+================================================================================
+
+10. FUTURE FILE STRUCTURE
+
+Project Structure for Micro-Therapy Feature Implementation:
+
+src/
+├── app/(app)/
+│   ├── session-intro.tsx                    # Session introduction screen
+│   ├── chat/
+│   │   └── [sessionId].tsx                  # Main chat interface
+│   └── affirmation/
+│       └── [sessionId].tsx                  # Affirmation display screen
+│
+├── components/
+│   ├── chat/
+│   │   ├── chat-interface.tsx               # Main chat container
+│   │   ├── message-bubble.tsx               # Individual message display
+│   │   ├── message-list.tsx                 # Scrollable message container
+│   │   ├── text-input.tsx                   # Text input component
+│   │   ├── voice-recorder.tsx               # Voice recording interface
+│   │   ├── communication-selector.tsx       # Text/Voice mode selector
+│   │   ├── session-progress.tsx             # Round progress indicator
+│   │   ├── audio-waveform.tsx              # Real-time audio visualization
+│   │   ├── audio-player.tsx                # AI response audio player
+│   │   └── session-timer.tsx               # Session duration timer
+│   │
+│   ├── affirmation/
+│   │   ├── affirmation-card.tsx            # Quote display card
+│   │   ├── affirmation-actions.tsx         # Save/share buttons
+│   │   └── save-image-modal.tsx            # Image save functionality
+│   │
+│   ├── session/
+│   │   ├── session-intro-card.tsx          # Introduction message card
+│   │   ├── daily-limit-warning.tsx         # Daily session limit notice
+│   │   └── session-completion-modal.tsx    # Session end modal
+│   │
+│   └── ui/
+│       ├── loading-spinner.tsx             # Loading states
+│       ├── error-boundary.tsx              # Error handling
+│       └── permission-modal.tsx           # Microphone permission request
+│
+├── lib/
+│   ├── stores/
+│   │   ├── session-store.ts                # Main session state management
+│   │   ├── daily-limit-store.ts            # Daily session tracking
+│   │   └── affirmation-store.ts            # Saved affirmations
+│   │
+│   ├── services/
+│   │   ├── openai/
+│   │   │   ├── text-chat.ts                # OpenAI Chat API integration
+│   │   │   ├── realtime-voice.ts           # OpenAI Realtime API
+│   │   │   ├── websocket-manager.ts        # WebSocket connection handling
+│   │   │   └── prompt-builder.ts           # System prompt construction
+│   │   │
+│   │   ├── audio/
+│   │   │   ├── recorder.ts                 # Audio recording service
+│   │   │   ├── player.ts                   # Audio playback service
+│   │   │   ├── permissions.ts              # Microphone permissions
+│   │   │   └── waveform-analyzer.ts        # Audio wave visualization
+│   │   │
+│   │   ├── storage/
+│   │   │   ├── session-storage.ts          # Local session persistence
+│   │   │   ├── affirmation-storage.ts      # Saved affirmations storage
+│   │   │   └── daily-limit-storage.ts      # Daily session tracking
+│   │   │
+│   │   └── image/
+│   │       └── affirmation-image.ts        # Generate shareable images
+│   │
+│   ├── hooks/
+│   │   ├── use-session.ts                  # Session management hook
+│   │   ├── use-chat-messages.ts            # Message handling hook
+│   │   ├── use-voice-recording.ts          # Voice recording hook
+│   │   ├── use-audio-playback.ts           # Audio playback hook
+│   │   ├── use-daily-limits.ts             # Daily session limits hook
+│   │   ├── use-websocket-connection.ts     # WebSocket management hook
+│   │   └── use-app-state.ts                # App lifecycle handling
+│   │
+│   ├── utils/
+│   │   ├── session-utils.ts                # Session helper functions
+│   │   ├── audio-utils.ts                  # Audio processing utilities
+│   │   ├── date-utils.ts                   # Date/time helpers
+│   │   ├── validation.ts                   # Input validation
+│   │   ├── error-handling.ts               # Error processing
+│   │   └── constants.ts                    # App constants
+│   │
+│   └── config/
+│       ├── openai-config.ts                # OpenAI API configuration
+│       ├── audio-config.ts                 # Audio settings
+│       └── session-config.ts               # Session parameters
+│
+└── types/
+    ├── session.ts                          # Session-related types
+    ├── chat.ts                             # Chat message types
+    ├── audio.ts                            # Audio-related types
+    ├── affirmation.ts                      # Affirmation types
+    ├── api.ts                              # API response types
+    └── storage.ts                          # Storage data types
+
+Key Files Breakdown:
+
+Core Screens:
+- session-intro.tsx: Welcome screen with "Let's go" button
+- [sessionId].tsx: Main chat interface with text/voice modes
+- affirmation/[sessionId].tsx: Final affirmation display
+
+State Management:
+- session-store.ts: Active session state, messages, progress
+- daily-limit-store.ts: Track 3 sessions per day limit
+- affirmation-store.ts: Saved quotes for user reference
+
+API Integration:
+- text-chat.ts: Direct HTTP calls to OpenAI Chat API
+- realtime-voice.ts: WebSocket connection to OpenAI Realtime API
+- prompt-builder.ts: Construct prompts with mood context
+
+Audio Handling:
+- recorder.ts: Microphone recording with permissions
+- player.ts: AI response audio playback
+- waveform-analyzer.ts: Real-time audio visualization
+
+Storage (Local MVP):
+- session-storage.ts: MMKV-based session persistence  
+- affirmation-storage.ts: Save generated quotes locally
+- daily-limit-storage.ts: Track daily session counts
+
+Utilities:
+- session-utils.ts: Session ID generation, validation
+- audio-utils.ts: Audio format conversion, processing
+- error-handling.ts: Centralized error processing
+
+Types:
+- Complete TypeScript definitions for all data models
+- API response interfaces
+- Component prop types
+
+This structure supports the complete micro-therapy feature while maintaining clean separation of concerns and scalability for future enhancements.
+
+================================================================================
+
+11. OPEN QUESTIONS REQUIRING CLARIFICATION
+
+Critical Questions:
+------------------
+1. Session Duration: What's the maximum time limit per session?
+2. Crisis Handling: How should AI respond to mentions of self-harm or severe depression?
+3. Affirmation Style: Should affirmations be more motivational, reflective, or action-oriented?
+4. User Onboarding: Any specific guidance needed for first-time users?
+5. Age Verification: Any age restrictions or verification needed?
+
+Technical Questions:
+-------------------
+6. Audio Quality: Any specific requirements for voice recording quality?
+7. Background Behavior: Confirm session ends immediately when app backgrounded?
+8. Storage Cleanup: How long should local session data be retained?
+
+Future Considerations:
+---------------------
+9. Analytics: What specific user interaction data should be tracked?
+10. Professional Resources: Should app provide links to professional support?
+11. Personalization: Future plans for user preferences or AI personality adjustment?
+
+================================================================================
+
+This PRD reflects the specific context and sensitive nature of Fapulous AI's micro-therapy feature, focusing on immediate post-masturbation emotional support with appropriate boundaries and privacy considerations.
+
+Document Version: 1.0
+Last Updated: [Current Date]
+Author: Product Team

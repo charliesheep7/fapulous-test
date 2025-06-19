@@ -72,6 +72,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         fonts: ['./assets/fonts/Inter.ttf'],
       },
     ],
+    [
+      'expo-audio',
+      {
+        microphonePermission:
+          'Allow $(PRODUCT_NAME) to access your microphone for voice therapy sessions.',
+      },
+    ],
     'expo-localization',
     'expo-router',
     ['app-icon-badge', appIconBadgeConfig],
