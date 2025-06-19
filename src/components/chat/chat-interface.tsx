@@ -3,16 +3,55 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { showErrorMessage } from '@/components/ui/utils';
-import { sendChatMessage } from '@/lib/services/openai/text-chat';
+import {
+  generateAffirmation,
+  sendChatMessage,
+} from '@/lib/services/openai/text-chat';
 import { useSessionStore } from '@/lib/stores/session-store';
+import type { ChatMessage, FapulousSession } from '@/types/session';
 
 import { AffirmationButton } from './affirmation-button';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
 
+// Helper function to generate affirmation after 5th user message
+async function handleAffirmationGeneration(
+  message: string,
+  currentSession: FapulousSession,
+  setAffirmation: (affirmation: string) => void
+) {
+  const newUserMessageCount =
+    currentSession.messages.filter((msg) => msg.role === 'user').length + 1;
+
+  if (newUserMessageCount === 5 && !currentSession.affirmation) {
+    try {
+      const tempMessage: ChatMessage = {
+        id: 'temp',
+        sessionId: currentSession.id,
+        role: 'user',
+        content: message,
+        messageType: 'text',
+        roundNumber: newUserMessageCount,
+        timestamp: new Date(),
+      };
+
+      const affirmation = await generateAffirmation(
+        [...currentSession.messages, tempMessage],
+        currentSession.selectedMoods
+      );
+      setAffirmation(affirmation);
+    } catch (affirmationError) {
+      console.error('Failed to generate affirmation:', affirmationError);
+      setAffirmation(
+        "You don't need to earn rest or comfort. You're allowed to start again."
+      );
+    }
+  }
+}
+
 export function ChatInterface() {
   const [isTyping, setIsTyping] = useState(false);
-  const { currentSession, addMessage, setLoading, setError } =
+  const { currentSession, addMessage, setLoading, setError, setAffirmation } =
     useSessionStore();
 
   if (!currentSession) {
@@ -38,6 +77,13 @@ export function ChatInterface() {
       );
 
       addMessage(aiResponse, 'assistant');
+
+      // Generate affirmation after user's 5th message
+      await handleAffirmationGeneration(
+        message,
+        currentSession,
+        setAffirmation
+      );
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage =
