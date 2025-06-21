@@ -207,7 +207,7 @@ Text Mode:
 
 Voice Mode:
 - OpenAI Realtime API with gpt-4o-realtime-preview
-- WebSocket connection
+- WebRTC connection for real-time audio streaming
 - System prompt configured for voice interaction
 - Audio format: OpenAI defaults
 
@@ -350,7 +350,7 @@ Phase 2: Text Implementation (Week 2)
 Phase 3: Voice Implementation (Week 3)
 --------------------------------------
 - Audio permissions and recording
-- WebSocket connection to OpenAI Realtime API
+- WebRTC connection to OpenAI Realtime API
 - Audio waveform visualization
 - Voice session management
 
@@ -419,8 +419,8 @@ src/
 │   ├── services/
 │   │   ├── openai/
 │   │   │   ├── text-chat.ts                # OpenAI Chat API integration
-│   │   │   ├── realtime-voice.ts           # OpenAI Realtime API
-│   │   │   ├── websocket-manager.ts        # WebSocket connection handling
+│   │   │   ├── realtime-voice.ts           # OpenAI Realtime API via WebRTC
+│   │   │   ├── webrtc-manager.ts        # WebRTC connection handling
 │   │   │   └── prompt-builder.ts           # System prompt construction
 │   │   │
 │   │   ├── audio/
@@ -443,7 +443,7 @@ src/
 │   │   ├── use-voice-recording.ts          # Voice recording hook
 │   │   ├── use-audio-playback.ts           # Audio playback hook
 │   │   ├── use-daily-limits.ts             # Daily session limits hook
-│   │   ├── use-websocket-connection.ts     # WebSocket management hook
+│   │   ├── use-webrtc-connection.ts     # WebRTC management hook
 │   │   └── use-app-state.ts                # App lifecycle handling
 │   │
 │   ├── utils/
@@ -481,7 +481,7 @@ State Management:
 
 API Integration:
 - text-chat.ts: Direct HTTP calls to OpenAI Chat API
-- realtime-voice.ts: WebSocket connection to OpenAI Realtime API
+- realtime-voice.ts: WebRTC connection to OpenAI Realtime API
 - prompt-builder.ts: Construct prompts with mood context
 
 Audio Handling:

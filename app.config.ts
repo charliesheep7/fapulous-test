@@ -42,6 +42,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     config: {
       usesNonExemptEncryption: false, // Avoid the export compliance warning on the app store
     },
+    infoPlist: {
+      NSCameraUsageDescription:
+        'Allow $(PRODUCT_NAME) to access your camera for video sessions.',
+      NSMicrophoneUsageDescription:
+        'Allow $(PRODUCT_NAME) to access your microphone for voice therapy sessions.',
+    },
   },
   experiments: {
     typedRoutes: true,
@@ -83,6 +89,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-router',
     ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
+    '@config-plugins/react-native-webrtc',
   ],
   extra: {
     ...ClientEnv,
