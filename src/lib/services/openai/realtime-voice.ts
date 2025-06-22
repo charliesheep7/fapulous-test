@@ -47,10 +47,12 @@ let dataChannel: ReturnType<RTCPeerConnection['createDataChannel']> | null =
 let localMediaStream: MediaStream | null = null;
 let remoteMediaStream: MediaStream | null = null;
 let sessionCallbacks: VoiceSessionCallbacks | null = null;
+let isSessionConfigured = false;
 
 export type VoiceSessionCallbacks = {
   onSessionStarted: () => void;
   onTranscriptReceived: (transcript: string) => void;
+  onSpeechStopped: () => void;
   onSessionEnded: () => void;
   onError: (error: string) => void;
 };
@@ -82,32 +84,57 @@ function cleanup() {
 }
 
 function setupDataChannel(dc: NonNullable<typeof dataChannel>) {
+  console.log('Setting up DataChannel listeners...');
   dc.addEventListener('open', () => {
-    const event = {
-      type: 'session.update',
-      session: {
-        modalities: ['audio'],
-        instructions: FAPULOUS_MENTOR_PROMPT,
-      },
-    };
-    dc.send(JSON.stringify(event));
-    sessionCallbacks?.onSessionStarted();
+    console.log('DataChannel OPEN');
+    // Session is already configured via backend, just wait for session.created
   });
 
   dc.addEventListener('message', async (e: any) => {
     const data = JSON.parse(e.data);
+    console.log('<<< RECEIVED event:', data.type);
+
+    // 1. Once session is created, update instructions with our prompt
+    if (data.type === 'session.created' && !isSessionConfigured) {
+      isSessionConfigured = true;
+      const event = {
+        type: 'session.update',
+        session: {
+          instructions: FAPULOUS_MENTOR_PROMPT,
+        },
+      };
+      console.log('>>> SENDING instructions update');
+      dc.send(JSON.stringify(event));
+    }
+
+    // 2. Once instructions are updated, let the app know it can start
+    if (data.type === 'session.updated') {
+      sessionCallbacks?.onSessionStarted();
+    }
+
+    // 3. Listen for when user stops speaking
+    if (data.type === 'input_audio_buffer.speech_stopped') {
+      sessionCallbacks?.onSpeechStopped();
+    }
+
+    // 4. Handle transcripts
     if (data.type === 'response.audio_transcript.done') {
       sessionCallbacks?.onTranscriptReceived(data.transcript);
     }
   });
 
   dc.addEventListener('close', () => {
+    console.log('DataChannel CLOSE');
     cleanup();
+  });
+
+  dc.addEventListener('error', (e) => {
+    console.error('DataChannel ERROR:', e);
   });
 }
 
 async function connectToOpenAI(pc: RTCPeerConnection, ephemeralKey: string) {
-  const offer = await pc.createOffer();
+  const offer = await pc.createOffer({});
   await pc.setLocalDescription(offer);
 
   const model = 'gpt-4o-realtime-preview-2024-12-17';
@@ -139,13 +166,17 @@ export async function startVoiceSession(callbacks: VoiceSessionCallbacks) {
     cleanup();
   }
   sessionCallbacks = callbacks;
+  isSessionConfigured = false;
 
   try {
     const { data, error } = await supabase.functions.invoke('get-openai-token');
-    if (error || !data?.client_secret) {
-      throw new Error(`Failed to get token: ${error?.message ?? 'No secret'}`);
+    const ephemeralKey = data?.client_secret?.value;
+
+    if (error || !ephemeralKey) {
+      throw new Error(
+        `Failed to get token: ${error?.message ?? 'No client_secret.value'}`
+      );
     }
-    const ephemeralKey = data.client_secret;
 
     await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
     InCallManager.start({ media: 'audio' });
@@ -180,11 +211,18 @@ export async function startVoiceSession(callbacks: VoiceSessionCallbacks) {
 
     await connectToOpenAI(peerConnection, ephemeralKey);
   } catch (error) {
+    console.error('!!! ERROR in startVoiceSession:', error);
     cleanup();
     sessionCallbacks?.onError(
       error instanceof Error ? error.message : 'An unknown error occurred'
     );
   }
+}
+
+export function triggerAIResponse() {
+  if (!dataChannel || dataChannel.readyState !== 'open') return;
+  console.log('Manually triggering AI response...');
+  dataChannel.send(JSON.stringify({ type: 'response.create' }));
 }
 
 export function stopVoiceSession() {
