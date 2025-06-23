@@ -82,14 +82,11 @@ function CommunicationModeSelector({
 
         <Pressable
           onPress={onVoiceMode}
-          className="items-center rounded-2xl bg-gray-100 p-6 dark:bg-gray-800"
+          className="items-center rounded-2xl bg-primary-50 p-6 dark:bg-primary-900/20"
         >
-          <MicIcon size={80} color="#6b7280" />
-          <Text className="mt-3 text-lg font-semibold text-gray-600 dark:text-gray-400">
+          <MicIcon size={80} color="#7c3aed" />
+          <Text className="mt-3 text-lg font-semibold text-primary-700 dark:text-primary-300">
             Voice
-          </Text>
-          <Text className="mt-1 text-xs text-gray-500 dark:text-gray-500">
-            Coming Soon
           </Text>
         </Pressable>
       </View>
@@ -128,7 +125,8 @@ export default function SessionIntroPage() {
   };
 
   const handleVoiceMode = () => {
-    alert('Voice mode coming soon!');
+    setCommunicationMode('voice');
+    router.push('/(app)/voice-chat');
   };
 
   if (!currentSession) {
