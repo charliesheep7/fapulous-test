@@ -137,7 +137,7 @@ async function connectToOpenAI(pc: RTCPeerConnection, ephemeralKey: string) {
   const offer = await pc.createOffer({});
   await pc.setLocalDescription(offer);
 
-  const model = 'gpt-4o-realtime-preview-2024-12-17';
+  const model = 'gpt-4o-mini-realtime-preview-2024-12-17';
   const sdpResponse = await fetch(
     `https://api.openai.com/v1/realtime?model=${model}`,
     {
