@@ -48,11 +48,14 @@ let localMediaStream: MediaStream | null = null;
 let remoteMediaStream: MediaStream | null = null;
 let sessionCallbacks: VoiceSessionCallbacks | null = null;
 let isSessionConfigured = false;
+let latestResponseTranscript = ''; // Store the latest transcript
 
 export type VoiceSessionCallbacks = {
   onSessionStarted: () => void;
   onTranscriptReceived: (transcript: string) => void;
   onSpeechStopped: () => void;
+  onSpeechStarted: () => void;
+  onResponseCompleted: (transcript: string) => void;
   onSessionEnded: () => void;
   onError: (error: string) => void;
 };
@@ -94,32 +97,87 @@ function setupDataChannel(dc: NonNullable<typeof dataChannel>) {
     const data = JSON.parse(e.data);
     console.log('<<< RECEIVED event:', data.type);
 
-    // 1. Once session is created, update instructions with our prompt
+    // 1. Once session is created, update instructions and configure VAD
     if (data.type === 'session.created' && !isSessionConfigured) {
       isSessionConfigured = true;
       const event = {
         type: 'session.update',
         session: {
           instructions: FAPULOUS_MENTOR_PROMPT,
+          // Explicitly enable VAD with automatic response creation
+          turn_detection: {
+            type: 'server_vad',
+            threshold: 0.5,
+            prefix_padding_ms: 300,
+            silence_duration_ms: 200,
+            create_response: true, // This is crucial for automatic responses!
+          },
+          // Ensure both audio and text output are enabled
+          modalities: ['text', 'audio'],
+          voice: 'alloy',
         },
       };
-      console.log('>>> SENDING instructions update');
+      console.log('>>> SENDING session configuration with VAD');
       dc.send(JSON.stringify(event));
     }
 
     // 2. Once instructions are updated, let the app know it can start
     if (data.type === 'session.updated') {
+      console.log(
+        'Session updated with config:',
+        JSON.stringify(data.session, null, 2)
+      );
       sessionCallbacks?.onSessionStarted();
     }
 
-    // 3. Listen for when user stops speaking
-    if (data.type === 'input_audio_buffer.speech_stopped') {
-      sessionCallbacks?.onSpeechStopped();
+    // 3. Listen for when user starts speaking
+    if (data.type === 'input_audio_buffer.speech_started') {
+      sessionCallbacks?.onSpeechStarted();
     }
 
-    // 4. Handle transcripts
+    // 4. Listen for when user stops speaking
+    if (data.type === 'input_audio_buffer.speech_stopped') {
+      sessionCallbacks?.onSpeechStopped();
+      // Note: With VAD enabled, the API will automatically generate a response
+      // No need to manually trigger response.create
+    }
+
+    // 5. Handle transcripts - capture the completed transcript
     if (data.type === 'response.audio_transcript.done') {
-      sessionCallbacks?.onTranscriptReceived(data.transcript);
+      const transcript = data.transcript || '';
+      latestResponseTranscript = transcript; // Store for later use
+      sessionCallbacks?.onTranscriptReceived(transcript);
+    }
+
+    // 6. Listen for when AI completes response (for round counting)
+    if (data.type === 'response.done') {
+      const status = data.response?.status;
+      console.log(
+        `Response ${status}:`,
+        latestResponseTranscript
+          ? `"${latestResponseTranscript.substring(0, 50)}..."`
+          : '(no transcript)'
+      );
+
+      // Only count completed responses with actual content
+      if (
+        status === 'completed' &&
+        latestResponseTranscript &&
+        latestResponseTranscript.trim().length > 5
+      ) {
+        console.log('✅ Valid response - incrementing round');
+        sessionCallbacks?.onResponseCompleted(latestResponseTranscript);
+      } else if (status === 'cancelled') {
+        console.log(
+          '🔄 Response cancelled (user likely interrupted - this is normal)'
+        );
+      } else {
+        console.log('⏭️  Skipping response:', {
+          status,
+          hasTranscript: !!latestResponseTranscript,
+        });
+      }
+      latestResponseTranscript = ''; // Reset for next response
     }
   });
 
@@ -186,7 +244,9 @@ export async function startVoiceSession(callbacks: VoiceSessionCallbacks) {
     remoteMediaStream = new MediaStream();
 
     peerConnection.addEventListener('track', (event) => {
-      remoteMediaStream?.addTrack(event.track);
+      if (event.track) {
+        remoteMediaStream?.addTrack(event.track);
+      }
     });
 
     peerConnection.addEventListener('connectionstatechange', () => {

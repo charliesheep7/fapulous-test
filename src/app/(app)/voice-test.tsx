@@ -24,9 +24,15 @@ export default function VoiceTestScreen() {
         setStatus('Session Started! Speak now.');
         setTranscript(newTranscript);
       },
+      onSpeechStarted: () => {
+        console.log('User started speaking');
+      },
       onSpeechStopped: () => {
         setStatus('I heard you. Thinking...');
         triggerAIResponse();
+      },
+      onResponseCompleted: (responseTranscript) => {
+        console.log('AI response completed:', responseTranscript);
       },
       onSessionEnded: () => setStatus('Session Ended.'),
       onError: (e) => {
