@@ -21,6 +21,7 @@ import {
 import {
   startVoiceSession,
   stopVoiceSession,
+  type VoiceSessionCallbacks,
 } from '@/lib/services/openai/realtime-voice';
 import { generateAffirmation } from '@/lib/services/openai/text-chat';
 import { useSessionStore } from '@/lib/stores/session-store';
@@ -117,6 +118,79 @@ function VoiceActionButton({
   );
 }
 
+// Helper functions for VoiceControls
+function getStatusText(
+  status: VoiceStatus,
+  isSessionComplete: boolean
+): string {
+  if (isSessionComplete) return 'Session complete! Get your affirmation below.';
+
+  switch (status) {
+    case 'idle':
+      return 'Tap to start speaking';
+    case 'connecting':
+      return 'Connecting to voice session...';
+    case 'ready':
+      return "I'm listening...";
+    case 'processing':
+      return 'I heard you. Thinking...';
+    case 'error':
+      return 'Connection error';
+    default:
+      return 'Ready';
+  }
+}
+
+async function handleGenerateAffirmation(params: {
+  currentSession: any;
+  allTranscripts: string[];
+  setAffirmation: (affirmation: string) => void;
+  onStop: () => void;
+}): Promise<void> {
+  const { currentSession, allTranscripts, setAffirmation, onStop } = params;
+
+  if (!currentSession) {
+    console.error('No current session found for affirmation');
+    return;
+  }
+
+  console.log('Generating affirmation with transcripts:', allTranscripts);
+
+  try {
+    const fakeMessages = allTranscripts.map((transcript, index) => ({
+      id: `voice-${index}`,
+      sessionId: currentSession.id,
+      role: 'assistant' as const,
+      content: transcript,
+      messageType: 'audio' as const,
+      roundNumber: index + 1,
+      timestamp: new Date(),
+    }));
+
+    console.log('Generated fake messages:', fakeMessages);
+
+    const affirmation = await generateAffirmation(
+      fakeMessages,
+      currentSession.selectedMoods
+    );
+
+    console.log('Generated affirmation:', affirmation);
+    setAffirmation(affirmation);
+
+    console.log('Navigating to affirmation screen...');
+    onStop();
+    router.push('/(app)/affirmation');
+  } catch (error) {
+    console.error('Failed to generate affirmation:', error);
+    const fallbackAffirmation =
+      "You don't need to earn rest or comfort. You're allowed to start again.";
+    console.log('Using fallback affirmation:', fallbackAffirmation);
+    setAffirmation(fallbackAffirmation);
+    onStop();
+    router.push('/(app)/affirmation');
+  }
+}
+
 function VoiceControls({
   status,
   error,
@@ -141,71 +215,13 @@ function VoiceControls({
   const { currentSession, setAffirmation } = useSessionStore();
   const isSessionComplete = currentRound >= 5;
 
-  const getStatusText = () => {
-    if (isSessionComplete)
-      return 'Session complete! Get your affirmation below.';
-
-    switch (status) {
-      case 'idle':
-        return 'Tap to start speaking';
-      case 'connecting':
-        return 'Connecting to voice session...';
-      case 'ready':
-        return "I'm listening...";
-      case 'processing':
-        return 'I heard you. Thinking...';
-      case 'error':
-        return 'Connection error';
-      default:
-        return 'Ready';
-    }
-  };
-
-  const handleGenerateAffirmation = async () => {
-    if (!currentSession) {
-      console.error('No current session found for affirmation');
-      return;
-    }
-
-    console.log('Generating affirmation with transcripts:', allTranscripts);
-
-    try {
-      // Create fake chat messages from transcripts for affirmation generation
-      const fakeMessages = allTranscripts.map((transcript, index) => ({
-        id: `voice-${index}`,
-        sessionId: currentSession.id,
-        role: 'assistant' as const,
-        content: transcript,
-        messageType: 'audio' as const,
-        roundNumber: index + 1,
-        timestamp: new Date(),
-      }));
-
-      console.log('Generated fake messages:', fakeMessages);
-
-      const affirmation = await generateAffirmation(
-        fakeMessages,
-        currentSession.selectedMoods
-      );
-
-      console.log('Generated affirmation:', affirmation);
-      setAffirmation(affirmation);
-
-      console.log('Navigating to affirmation screen...');
-      // Stop voice session before navigating
-      onStop();
-      router.push('/(app)/affirmation');
-    } catch (error) {
-      console.error('Failed to generate affirmation:', error);
-      // Use fallback
-      const fallbackAffirmation =
-        "You don't need to earn rest or comfort. You're allowed to start again.";
-      console.log('Using fallback affirmation:', fallbackAffirmation);
-      setAffirmation(fallbackAffirmation);
-      // Stop voice session before navigating
-      onStop();
-      router.push('/(app)/affirmation');
-    }
+  const onAffirmationPress = () => {
+    handleGenerateAffirmation({
+      currentSession,
+      allTranscripts,
+      setAffirmation,
+      onStop,
+    });
   };
 
   return (
@@ -216,7 +232,7 @@ function VoiceControls({
       <View className="flex-1 items-center justify-center px-6">
         <View className="mb-8">
           <Text className="text-center text-xl font-medium text-text-primary dark:text-white">
-            {getStatusText()}
+            {getStatusText(status, isSessionComplete)}
           </Text>
         </View>
 
@@ -241,9 +257,7 @@ function VoiceControls({
       </View>
 
       {/* Affirmation Button when session complete */}
-      {isSessionComplete && (
-        <AffirmationButton onPress={handleGenerateAffirmation} />
-      )}
+      {isSessionComplete && <AffirmationButton onPress={onAffirmationPress} />}
     </View>
   );
 }
@@ -266,6 +280,78 @@ function SessionNotFound() {
   );
 }
 
+// Voice session callback handlers
+function createVoiceSessionCallbacks(
+  setters: {
+    setStatus: (status: VoiceStatus) => void;
+    setIsRecording: (recording: boolean) => void;
+    setTranscript: (transcript: string) => void;
+    setCurrentRound: (updateFn: (prev: number) => number) => void;
+    setAllTranscripts: (updateFn: (prev: string[]) => string[]) => void;
+    setIsSessionComplete: (complete: boolean) => void;
+    setIsSessionActive: (active: boolean) => void;
+    setError: (error: string) => void;
+  },
+  isSessionComplete: boolean
+): VoiceSessionCallbacks {
+  return {
+    onSessionStarted: () => setters.setStatus('ready'),
+    onSpeechStarted: () => {
+      setters.setIsRecording(true);
+      setters.setStatus('listening');
+    },
+    onSpeechStopped: () => {
+      setters.setIsRecording(false);
+      setters.setStatus('processing');
+      console.log(
+        'Speech stopped, trusting OpenAI VAD for automatic response...'
+      );
+    },
+    onTranscriptReceived: (newTranscript) => {
+      setters.setStatus('ready');
+      setters.setTranscript(newTranscript);
+    },
+    onResponseCompleted: (responseTranscript) => {
+      setters.setCurrentRound((prevRound) => {
+        const newRound = prevRound + 1;
+        console.log(`Round completed: ${prevRound} -> ${newRound}`);
+
+        if (newRound >= 5) {
+          console.log('Session completed! Preparing affirmation...');
+          setters.setIsSessionComplete(true);
+          setters.setStatus('idle');
+        } else {
+          setters.setStatus('ready');
+        }
+
+        return newRound;
+      });
+
+      if (responseTranscript && responseTranscript.trim().length > 0) {
+        setters.setAllTranscripts((prev) => [...prev, responseTranscript]);
+      }
+    },
+    onSessionEnded: () => {
+      if (!isSessionComplete) {
+        setters.setStatus('idle');
+        setters.setIsSessionActive(false);
+        setters.setTranscript('');
+        setters.setCurrentRound(() => 0);
+        setters.setAllTranscripts(() => []);
+        setters.setIsRecording(false);
+        setters.setIsSessionComplete(false);
+      }
+    },
+    onError: (errorMessage) => {
+      setters.setStatus('error');
+      setters.setError(errorMessage);
+      setters.setIsSessionActive(false);
+      setters.setIsRecording(false);
+      setters.setIsSessionComplete(false);
+    },
+  };
+}
+
 function useVoiceSession() {
   const [status, setStatus] = useState<VoiceStatus>('idle');
   const [error, setError] = useState<string>('');
@@ -281,73 +367,26 @@ function useVoiceSession() {
     setError('');
     setIsSessionActive(true);
     setTranscript('');
-    setCurrentRound(0);
-    setAllTranscripts([]);
+    setCurrentRound(() => 0);
+    setAllTranscripts(() => []);
     setIsRecording(false);
     setIsSessionComplete(false);
 
-    startVoiceSession({
-      onSessionStarted: () => setStatus('ready'),
-      onSpeechStarted: () => {
-        setIsRecording(true);
-        setStatus('listening');
+    const callbacks = createVoiceSessionCallbacks(
+      {
+        setStatus,
+        setIsRecording,
+        setTranscript,
+        setCurrentRound,
+        setAllTranscripts,
+        setIsSessionComplete,
+        setIsSessionActive,
+        setError,
       },
-      onSpeechStopped: () => {
-        setIsRecording(false);
-        setStatus('processing');
-        console.log(
-          'Speech stopped, trusting OpenAI VAD for automatic response...'
-        );
-        // No manual triggering - let OpenAI's VAD handle everything
-      },
-      onTranscriptReceived: (newTranscript) => {
-        setStatus('ready');
-        setTranscript(newTranscript);
-      },
-      onResponseCompleted: (responseTranscript) => {
-        setCurrentRound((prevRound) => {
-          const newRound = prevRound + 1;
-          console.log(`Round completed: ${prevRound} -> ${newRound}`);
+      isSessionComplete
+    );
 
-          if (newRound >= 5) {
-            console.log('Session completed! Stopping voice input...');
-            setIsSessionComplete(true);
-            setStatus('idle');
-            // Stop the voice session to prevent further audio processing
-            setTimeout(() => {
-              console.log('Terminating voice session after completion');
-              stopVoiceSession();
-              setIsSessionActive(false);
-            }, 500);
-          } else {
-            setStatus('ready');
-          }
-
-          return newRound;
-        });
-
-        // Collect transcripts for affirmation generation
-        if (responseTranscript && responseTranscript.trim().length > 0) {
-          setAllTranscripts((prev) => [...prev, responseTranscript]);
-        }
-      },
-      onSessionEnded: () => {
-        setStatus('idle');
-        setIsSessionActive(false);
-        setTranscript('');
-        setCurrentRound(0);
-        setAllTranscripts([]);
-        setIsRecording(false);
-        setIsSessionComplete(false);
-      },
-      onError: (errorMessage) => {
-        setStatus('error');
-        setError(errorMessage);
-        setIsSessionActive(false);
-        setIsRecording(false);
-        setIsSessionComplete(false);
-      },
-    });
+    startVoiceSession(callbacks);
   };
 
   const stopSession = () => {
@@ -355,8 +394,8 @@ function useVoiceSession() {
     setStatus('idle');
     setIsSessionActive(false);
     setTranscript('');
-    setCurrentRound(0);
-    setAllTranscripts([]);
+    setCurrentRound(() => 0);
+    setAllTranscripts(() => []);
     setIsRecording(false);
     setIsSessionComplete(false);
   };
@@ -375,6 +414,145 @@ function useVoiceSession() {
   };
 }
 
+// Animation setup functions for SimpleWaveform
+function setupRecordingAnimations(bars: {
+  bar1: any;
+  bar2: any;
+  bar3: any;
+  bar4: any;
+}) {
+  bars.bar1.value = withRepeat(
+    withTiming(1.5, { duration: 300, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar2.value = withRepeat(
+    withTiming(2, { duration: 200, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar3.value = withRepeat(
+    withTiming(1.8, { duration: 250, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar4.value = withRepeat(
+    withTiming(1.3, { duration: 350, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+}
+
+function setupListeningAnimations(bars: {
+  bar1: any;
+  bar2: any;
+  bar3: any;
+  bar4: any;
+}) {
+  bars.bar1.value = withRepeat(
+    withTiming(1.1, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar2.value = withRepeat(
+    withTiming(1.05, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar3.value = withRepeat(
+    withTiming(1.08, { duration: 1100, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+  bars.bar4.value = withRepeat(
+    withTiming(1.06, { duration: 1300, easing: Easing.inOut(Easing.ease) }),
+    -1,
+    true
+  );
+}
+
+function stopAnimations(bars: { bar1: any; bar2: any; bar3: any; bar4: any }) {
+  bars.bar1.value = withTiming(1, { duration: 200 });
+  bars.bar2.value = withTiming(1, { duration: 200 });
+  bars.bar3.value = withTiming(1, { duration: 200 });
+  bars.bar4.value = withTiming(1, { duration: 200 });
+}
+
+// Bar rendering components for SimpleWaveform
+function TopBars({ bar1Style, bar2Style, bar3Style }: any) {
+  return (
+    <View className="absolute -top-20 flex-row space-x-2">
+      <Animated.View
+        style={[bar1Style]}
+        className="h-4 w-1 rounded-full bg-primary-400"
+      />
+      <Animated.View
+        style={[bar2Style]}
+        className="h-6 w-1 rounded-full bg-primary-500"
+      />
+      <Animated.View
+        style={[bar3Style]}
+        className="h-5 w-1 rounded-full bg-primary-400"
+      />
+    </View>
+  );
+}
+
+function BottomBars({ bar1Style, bar2Style, bar4Style }: any) {
+  return (
+    <View className="absolute -bottom-20 flex-row space-x-2">
+      <Animated.View
+        style={[bar4Style]}
+        className="h-4 w-1 rounded-full bg-primary-400"
+      />
+      <Animated.View
+        style={[bar1Style]}
+        className="h-6 w-1 rounded-full bg-primary-500"
+      />
+      <Animated.View
+        style={[bar2Style]}
+        className="h-5 w-1 rounded-full bg-primary-400"
+      />
+    </View>
+  );
+}
+
+function SideBars({ bar1Style, bar2Style, bar3Style, bar4Style }: any) {
+  return (
+    <>
+      <View className="absolute -left-20 flex-col space-y-2">
+        <Animated.View
+          style={[bar3Style]}
+          className="h-1 w-4 rounded-full bg-primary-400"
+        />
+        <Animated.View
+          style={[bar4Style]}
+          className="h-1 w-6 rounded-full bg-primary-500"
+        />
+        <Animated.View
+          style={[bar1Style]}
+          className="h-1 w-5 rounded-full bg-primary-400"
+        />
+      </View>
+
+      <View className="absolute -right-20 flex-col space-y-2">
+        <Animated.View
+          style={[bar2Style]}
+          className="h-1 w-4 rounded-full bg-primary-400"
+        />
+        <Animated.View
+          style={[bar3Style]}
+          className="h-1 w-6 rounded-full bg-primary-500"
+        />
+        <Animated.View
+          style={[bar4Style]}
+          className="h-1 w-5 rounded-full bg-primary-400"
+        />
+      </View>
+    </>
+  );
+}
+
 function SimpleWaveform({
   isRecording,
   isListening,
@@ -387,57 +565,15 @@ function SimpleWaveform({
   const bar3 = useSharedValue(1);
   const bar4 = useSharedValue(1);
 
+  const bars = { bar1, bar2, bar3, bar4 };
+
   React.useEffect(() => {
     if (isRecording) {
-      // Active bouncing animation when user is speaking
-      bar1.value = withRepeat(
-        withTiming(1.5, { duration: 300, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar2.value = withRepeat(
-        withTiming(2, { duration: 200, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar3.value = withRepeat(
-        withTiming(1.8, { duration: 250, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar4.value = withRepeat(
-        withTiming(1.3, { duration: 350, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
+      setupRecordingAnimations(bars);
     } else if (isListening) {
-      // Gentle pulse when listening
-      bar1.value = withRepeat(
-        withTiming(1.1, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar2.value = withRepeat(
-        withTiming(1.05, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar3.value = withRepeat(
-        withTiming(1.08, { duration: 1100, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
-      bar4.value = withRepeat(
-        withTiming(1.06, { duration: 1300, easing: Easing.inOut(Easing.ease) }),
-        -1,
-        true
-      );
+      setupListeningAnimations(bars);
     } else {
-      // Stop animations
-      bar1.value = withTiming(1, { duration: 200 });
-      bar2.value = withTiming(1, { duration: 200 });
-      bar3.value = withTiming(1, { duration: 200 });
-      bar4.value = withTiming(1, { duration: 200 });
+      stopAnimations(bars);
     }
   }, [isRecording, isListening]);
 
@@ -459,69 +595,22 @@ function SimpleWaveform({
 
   return (
     <View className="absolute inset-0 items-center justify-center">
-      {/* Top bars */}
-      <View className="absolute -top-20 flex-row space-x-2">
-        <Animated.View
-          style={[bar1Style]}
-          className="h-4 w-1 rounded-full bg-primary-400"
-        />
-        <Animated.View
-          style={[bar2Style]}
-          className="h-6 w-1 rounded-full bg-primary-500"
-        />
-        <Animated.View
-          style={[bar3Style]}
-          className="h-5 w-1 rounded-full bg-primary-400"
-        />
-      </View>
-
-      {/* Bottom bars */}
-      <View className="absolute -bottom-20 flex-row space-x-2">
-        <Animated.View
-          style={[bar4Style]}
-          className="h-4 w-1 rounded-full bg-primary-400"
-        />
-        <Animated.View
-          style={[bar1Style]}
-          className="h-6 w-1 rounded-full bg-primary-500"
-        />
-        <Animated.View
-          style={[bar2Style]}
-          className="h-5 w-1 rounded-full bg-primary-400"
-        />
-      </View>
-
-      {/* Left bars */}
-      <View className="absolute -left-20 flex-col space-y-2">
-        <Animated.View
-          style={[bar3Style]}
-          className="h-1 w-4 rounded-full bg-primary-400"
-        />
-        <Animated.View
-          style={[bar4Style]}
-          className="h-1 w-6 rounded-full bg-primary-500"
-        />
-        <Animated.View
-          style={[bar1Style]}
-          className="h-1 w-5 rounded-full bg-primary-400"
-        />
-      </View>
-
-      {/* Right bars */}
-      <View className="absolute -right-20 flex-col space-y-2">
-        <Animated.View
-          style={[bar2Style]}
-          className="h-1 w-4 rounded-full bg-primary-400"
-        />
-        <Animated.View
-          style={[bar3Style]}
-          className="h-1 w-6 rounded-full bg-primary-500"
-        />
-        <Animated.View
-          style={[bar4Style]}
-          className="h-1 w-5 rounded-full bg-primary-400"
-        />
-      </View>
+      <TopBars
+        bar1Style={bar1Style}
+        bar2Style={bar2Style}
+        bar3Style={bar3Style}
+      />
+      <BottomBars
+        bar1Style={bar1Style}
+        bar2Style={bar2Style}
+        bar4Style={bar4Style}
+      />
+      <SideBars
+        bar1Style={bar1Style}
+        bar2Style={bar2Style}
+        bar3Style={bar3Style}
+        bar4Style={bar4Style}
+      />
     </View>
   );
 }
