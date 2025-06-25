@@ -67,6 +67,10 @@ export default function TabLayout() {
         name="affirmation"
         options={{ href: null, headerShown: false }}
       />
+      <Tabs.Screen
+        name="voice-chat"
+        options={{ href: null, headerShown: false }}
+      />
     </Tabs>
   );
 }

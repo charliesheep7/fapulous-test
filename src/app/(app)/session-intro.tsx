@@ -10,7 +10,6 @@ import {
   View,
 } from '@/components/ui';
 import { useSessionStore } from '@/lib/stores/session-store';
-import type { MoodType } from '@/types/mood';
 
 // Communication mode icons
 function TextIcon({
@@ -94,28 +93,6 @@ function CommunicationModeSelector({
   );
 }
 
-function SelectedMoodsDisplay({ moods }: { moods: MoodType[] }) {
-  return (
-    <View className="w-full">
-      <Text className="mb-3 text-center text-base text-text-secondary dark:text-gray-300">
-        Your current feelings:
-      </Text>
-      <View className="flex-row flex-wrap justify-center gap-2">
-        {moods.map((mood) => (
-          <View
-            key={mood}
-            className="rounded-full bg-primary-100 px-3 py-1 dark:bg-primary-900/30"
-          >
-            <Text className="text-sm font-medium text-primary-700 dark:text-primary-300">
-              {mood}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-}
-
 export default function SessionIntroPage() {
   const { currentSession, setCommunicationMode } = useSessionStore();
 
@@ -151,7 +128,6 @@ export default function SessionIntroPage() {
           onTextMode={handleTextMode}
           onVoiceMode={handleVoiceMode}
         />
-        <SelectedMoodsDisplay moods={currentSession.selectedMoods} />
       </View>
     </SafeAreaView>
   );

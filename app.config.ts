@@ -33,8 +33,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   updates: {
+    url: 'https://u.expo.dev/371ca1de-f334-44a9-a518-297306159022',
     fallbackToCacheTimeout: 0,
   },
+  runtimeVersion: '1.0.0',
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
