@@ -5,7 +5,6 @@ import React, { useCallback, useEffect } from 'react';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuth, useIsFirstTime } from '@/lib';
 
@@ -32,17 +31,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Fapulous',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
           tabBarButtonTestID: 'fapulous-tab',
-        }}
-      />
-      <Tabs.Screen
-        name="style"
-        options={{
-          title: 'Style',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
         }}
       />
       <Tabs.Screen

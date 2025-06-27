@@ -7,6 +7,5 @@ export * from './language';
 export * from './rate';
 export * from './settings';
 export * from './share';
-export * from './style';
 export * from './support';
 export * from './website';

@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import React from 'react';
 
-import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { Button, FocusAwareStatusBar, View } from '@/components/ui';
 
 export default function Fapulous() {
   const handleStartPress = () => {
@@ -18,11 +18,6 @@ export default function Fapulous() {
 
       {/* Main content */}
       <View className="flex-1 items-center justify-center px-8">
-        {/* Enhanced headline with better typography */}
-        <Text className="mb-16 px-4 text-center text-4xl font-black leading-tight tracking-wide text-text-primary dark:text-white">
-          Ready when you are
-        </Text>
-
         {/* Elegant enhanced button */}
         <Button
           label="Start feeling better"
