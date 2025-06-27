@@ -1,6 +1,5 @@
 import { router } from 'expo-router';
 import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
 
 import {
   FocusAwareStatusBar,
@@ -10,40 +9,6 @@ import {
   View,
 } from '@/components/ui';
 import { useSessionStore } from '@/lib/stores/session-store';
-
-// Communication mode icons
-function TextIcon({
-  size = 64,
-  color = '#000',
-}: {
-  size?: number;
-  color?: string;
-}) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 64 64" fill="none">
-      <Path
-        d="M8 10c0-2.2 1.8-4 4-4h40c2.2 0 4 1.8 4 4v32c0 2.2-1.8 4-4 4H24l-12 10 2.4-10H12c-2.2 0-4-1.8-4-4V10z"
-        stroke={color}
-        strokeWidth="4"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
-
-function MicIcon({
-  size = 64,
-  color = '#000',
-}: {
-  size?: number;
-  color?: string;
-}) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 64 64" fill={color}>
-      <Path d="M32 4c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8s8-3.6 8-8V12c0-4.4-3.6-8-8-8zM44 28c0 6.6-5.4 12-12 12s-12-5.4-12-12h-4c0 8.4 6.4 15.2 14.4 15.9V48h-8c-1.1 0-2 .9-2 2s.9 2 2 2h20c1.1 0 2-.9 2-2s-.9-2-2-2h-8v-4.1C41.6 43.2 48 36.4 48 28h-4z" />
-    </Svg>
-  );
-}
 
 // Components
 function WelcomeMessage() {
@@ -67,25 +32,25 @@ function CommunicationModeSelector({
   onVoiceMode: () => void;
 }) {
   return (
-    <View className="mb-12 w-full">
-      <View className="flex-row justify-around">
+    <View className="mb-8 w-full max-w-sm">
+      <View>
         <Pressable
           onPress={onTextMode}
-          className="items-center rounded-2xl bg-primary-50 p-6 dark:bg-primary-900/20"
+          className="mb-6 flex-row items-center rounded-full bg-primary-500 p-5 shadow-lg transition-all duration-150 active:scale-95 active:bg-primary-600"
         >
-          <TextIcon size={80} color="#7c3aed" />
-          <Text className="mt-3 text-lg font-semibold text-primary-700 dark:text-primary-300">
-            Text
+          <Text className="mr-4 text-3xl">💬</Text>
+          <Text className="flex-1 text-lg font-medium text-white">
+            I'll text you
           </Text>
         </Pressable>
 
         <Pressable
           onPress={onVoiceMode}
-          className="items-center rounded-2xl bg-primary-50 p-6 dark:bg-primary-900/20"
+          className="flex-row items-center rounded-full bg-primary-500 p-5 shadow-lg transition-all duration-150 active:scale-95 active:bg-primary-600"
         >
-          <MicIcon size={80} color="#7c3aed" />
-          <Text className="mt-3 text-lg font-semibold text-primary-700 dark:text-primary-300">
-            Voice
+          <Text className="mr-4 text-3xl">🗣️</Text>
+          <Text className="flex-1 text-lg font-medium text-white">
+            talk about it
           </Text>
         </Pressable>
       </View>
