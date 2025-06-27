@@ -18,10 +18,18 @@ async function generateAffirmationIfNeeded(
   const newUserMessageCount =
     currentSession.messages.filter((msg) => msg.role === 'user').length + 1;
 
+  console.log('🔍 Checking affirmation generation:', {
+    newUserMessageCount,
+    maxMessages: CONVERSATION_CONFIG.MAX_USER_MESSAGES,
+    hasExistingAffirmation: !!currentSession.affirmation,
+  });
+
   if (
     newUserMessageCount === CONVERSATION_CONFIG.MAX_USER_MESSAGES &&
     !currentSession.affirmation
   ) {
+    console.log('✨ Starting affirmation generation...');
+
     try {
       const tempMessage: ChatMessage = {
         id: 'temp',
@@ -37,12 +45,15 @@ async function generateAffirmationIfNeeded(
         [...currentSession.messages, tempMessage],
         currentSession.selectedMoods
       );
+
+      console.log('💝 Affirmation generated successfully:', affirmation);
       setAffirmation(affirmation);
     } catch (affirmationError) {
-      console.error('Failed to generate affirmation:', affirmationError);
-      setAffirmation(
-        "You don't need to earn rest or comfort. You're allowed to start again."
-      );
+      console.error('❌ Failed to generate affirmation:', affirmationError);
+      const fallbackAffirmation =
+        "You don't need to earn rest or comfort. You're allowed to start again.";
+      console.log('🔄 Using fallback affirmation:', fallbackAffirmation);
+      setAffirmation(fallbackAffirmation);
     }
   }
 }

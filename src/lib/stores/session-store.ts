@@ -126,6 +126,28 @@ const updateSessionStatusAction =
     }
   };
 
+// Helper function to set affirmation with logging
+const setAffirmationAction = (set: any, get: any) => (affirmation: string) => {
+  const { currentSession } = get();
+  console.log('🎯 Setting affirmation:', {
+    hasCurrentSession: !!currentSession,
+    affirmation,
+    sessionId: currentSession?.id,
+  });
+
+  if (currentSession) {
+    set({
+      currentSession: {
+        ...currentSession,
+        affirmation,
+      },
+    });
+    console.log('✅ Affirmation set successfully');
+  } else {
+    console.log('❌ No current session to set affirmation on');
+  }
+};
+
 export const useSessionStore = create<SessionStore>((set, get) => ({
   // Initial state
   currentSession: null,
@@ -149,17 +171,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   },
   addMessage: addMessageAction(set, get),
   updateSessionStatus: updateSessionStatusAction(set, get),
-  setAffirmation: (affirmation: string) => {
-    const { currentSession } = get();
-    if (currentSession) {
-      set({
-        currentSession: {
-          ...currentSession,
-          affirmation,
-        },
-      });
-    }
-  },
+  setAffirmation: setAffirmationAction(set, get),
   clearSession: () => {
     set({
       currentSession: null,

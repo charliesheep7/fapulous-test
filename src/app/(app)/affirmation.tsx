@@ -71,15 +71,29 @@ function AffirmationCard({ affirmation }: { affirmation: string }) {
 export default function AffirmationPage() {
   const { currentSession, clearSession } = useSessionStore();
 
+  console.log('🎯 Affirmation page loaded:', {
+    hasCurrentSession: !!currentSession,
+    hasAffirmation: !!currentSession?.affirmation,
+    affirmation: currentSession?.affirmation,
+  });
+
   const handleFinish = () => {
+    console.log('🏁 Finishing session and navigating home');
     clearSession();
     router.push('/(app)/');
   };
 
-  if (!currentSession || !currentSession.affirmation) {
+  if (!currentSession) {
+    console.log('❌ No current session found');
     return <AffirmationNotFound />;
   }
 
+  if (!currentSession.affirmation) {
+    console.log('❌ No affirmation found in session');
+    return <AffirmationNotFound />;
+  }
+
+  console.log('✅ Displaying affirmation card');
   return (
     <SafeAreaView className="bg-background flex-1">
       <FocusAwareStatusBar />
