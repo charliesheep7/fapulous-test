@@ -8,4 +8,5 @@ export * from './rate';
 export * from './settings';
 export * from './share';
 export * from './support';
+export * from './user';
 export * from './website';

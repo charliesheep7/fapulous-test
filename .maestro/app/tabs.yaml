@@ -13,7 +13,7 @@ env:
     id: 'style-tab'
 - assertVisible: 'Typography'
 - tapOn:
-    id: 'settings-tab'
-- assertVisible: 'Settings'
+    id: 'user-tab'
+- assertVisible: 'You'
 - scroll
 - assertVisible: 'Logout'

@@ -17,7 +17,7 @@ import {
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
 
-export default function Settings() {
+export default function User() {
   const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
