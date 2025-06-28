@@ -5,6 +5,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import {
   Button,
   FocusAwareStatusBar,
+  GradientBackground,
   SafeAreaView,
   Text,
   View,
@@ -13,19 +14,21 @@ import { useSessionStore } from '@/lib/stores/session-store';
 
 function AffirmationNotFound() {
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <View className="flex-1 items-center justify-center px-6">
-        <Text className="text-center text-xl text-text-primary dark:text-white">
-          Affirmation not found
-        </Text>
-        <Button
-          label="Go Home"
-          onPress={() => router.push('/(app)/')}
-          className="mt-4"
-        />
-      </View>
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center text-xl text-text-primary dark:text-white">
+            Affirmation not found
+          </Text>
+          <Button
+            label="Go Home"
+            onPress={() => router.push('/(app)/')}
+            className="mt-4"
+          />
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
@@ -95,17 +98,19 @@ export default function AffirmationPage() {
 
   console.log('✅ Displaying affirmation card');
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
 
-      <AffirmationCard affirmation={currentSession.affirmation} />
+        <AffirmationCard affirmation={currentSession.affirmation} />
 
-      <Animated.View
-        entering={FadeInUp.delay(800).duration(600)}
-        className="p-6"
-      >
-        <Button label="Finish Session" onPress={handleFinish} size="lg" />
-      </Animated.View>
-    </SafeAreaView>
+        <Animated.View
+          entering={FadeInUp.delay(800).duration(600)}
+          className="p-6"
+        >
+          <Button label="Finish Session" onPress={handleFinish} size="lg" />
+        </Animated.View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }

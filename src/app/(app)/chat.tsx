@@ -5,6 +5,7 @@ import { ChatInterface, RoundIndicator } from '@/components/chat';
 import {
   Button,
   FocusAwareStatusBar,
+  GradientBackground,
   SafeAreaView,
   Text,
   View,
@@ -14,19 +15,21 @@ import type { FapulousSession } from '@/types/session';
 
 function SessionNotFound() {
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <View className="flex-1 items-center justify-center px-6">
-        <Text className="text-center text-xl text-text-primary dark:text-white">
-          Session not found
-        </Text>
-        <Button
-          label="Go Home"
-          onPress={() => router.push('/(app)/')}
-          className="mt-4"
-        />
-      </View>
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center text-xl text-text-primary dark:text-white">
+            Session not found
+          </Text>
+          <Button
+            label="Go Home"
+            onPress={() => router.push('/(app)/')}
+            className="mt-4"
+          />
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
@@ -63,10 +66,12 @@ export default function ChatPage() {
   }
 
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <ChatHeader session={currentSession} />
-      <ChatInterface />
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <ChatHeader session={currentSession} />
+        <ChatInterface />
+      </SafeAreaView>
+    </GradientBackground>
   );
 }

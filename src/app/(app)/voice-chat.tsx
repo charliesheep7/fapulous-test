@@ -14,6 +14,7 @@ import { AffirmationButton } from '@/components/chat';
 import {
   Button,
   FocusAwareStatusBar,
+  GradientBackground,
   SafeAreaView,
   Text,
   View,
@@ -264,19 +265,21 @@ function VoiceControls({
 
 function SessionNotFound() {
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <View className="flex-1 items-center justify-center px-6">
-        <Text className="text-center text-xl text-text-primary dark:text-white">
-          Session not found
-        </Text>
-        <Button
-          label="Go Home"
-          onPress={() => router.push('/(app)/')}
-          className="mt-4"
-        />
-      </View>
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-center text-xl text-text-primary dark:text-white">
+            Session not found
+          </Text>
+          <Button
+            label="Go Home"
+            onPress={() => router.push('/(app)/')}
+            className="mt-4"
+          />
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
@@ -660,20 +663,22 @@ export default function VoiceChatPage() {
   if (!currentSession) return <SessionNotFound />;
 
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <VoiceHeader onEmergencyExit={handleEmergencyExit} />
-      <VoiceControls
-        status={status}
-        error={error}
-        isSessionActive={isSessionActive}
-        transcript={transcript}
-        currentRound={currentRound}
-        allTranscripts={allTranscripts}
-        isRecording={isRecording}
-        onStart={startSession}
-        onStop={stopSession}
-      />
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <VoiceHeader onEmergencyExit={handleEmergencyExit} />
+        <VoiceControls
+          status={status}
+          error={error}
+          isSessionActive={isSessionActive}
+          transcript={transcript}
+          currentRound={currentRound}
+          allTranscripts={allTranscripts}
+          isRecording={isRecording}
+          onStart={startSession}
+          onStop={stopSession}
+        />
+      </SafeAreaView>
+    </GradientBackground>
   );
 }

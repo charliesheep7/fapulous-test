@@ -11,7 +11,12 @@ type Props = {
 export function GradientBackground({ children }: Props) {
   return (
     <LinearGradient
-      colors={[colors.indigo[100], colors.purple[50], colors.blue[100]]}
+      colors={[
+        colors.cyan[100],
+        colors.sky[50],
+        colors.gray[50],
+        colors.slate[50],
+      ]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.gradient}

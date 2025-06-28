@@ -5,6 +5,7 @@ import { MoodSelector } from '@/components/mood-selector';
 import {
   Button,
   FocusAwareStatusBar,
+  GradientBackground,
   SafeAreaView,
   Text,
   View,
@@ -32,33 +33,35 @@ export default function MoodSelectionPage() {
   };
 
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
 
-      {/* Header */}
-      <View className="px-6 pb-6 pt-4">
-        <View className="mb-6">
-          <Text className="mb-1 text-center text-2xl font-bold text-text-primary dark:text-white">
-            How are you feeling right now?
-          </Text>
+        {/* Header */}
+        <View className="px-6 pb-6 pt-4">
+          <View className="mb-6">
+            <Text className="mb-1 text-center text-2xl font-bold text-text-primary dark:text-white">
+              How are you feeling right now?
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Mood Selection Grid */}
-      <View className="flex-1 px-6">
-        <MoodSelector />
-      </View>
+        {/* Mood Selection Grid */}
+        <View className="flex-1 px-6">
+          <MoodSelector />
+        </View>
 
-      {/* Bottom Actions */}
-      <View className="p-6">
-        <Button
-          label="Continue"
-          onPress={handleContinue}
-          disabled={!isSelectionValid}
-          variant="secondary"
-          size="lg"
-        />
-      </View>
-    </SafeAreaView>
+        {/* Bottom Actions */}
+        <View className="p-6">
+          <Button
+            label="Continue"
+            onPress={handleContinue}
+            disabled={!isSelectionValid}
+            variant="secondary"
+            size="lg"
+          />
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }

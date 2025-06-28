@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import {
   FocusAwareStatusBar,
+  GradientBackground,
   Pressable,
   SafeAreaView,
   Text,
@@ -73,27 +74,31 @@ export default function SessionIntroPage() {
 
   if (!currentSession) {
     return (
-      <SafeAreaView className="bg-background flex-1">
-        <FocusAwareStatusBar />
-        <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-xl text-text-primary dark:text-white">
-            Session not found
-          </Text>
-        </View>
-      </SafeAreaView>
+      <GradientBackground>
+        <SafeAreaView className="flex-1">
+          <FocusAwareStatusBar />
+          <View className="flex-1 items-center justify-center px-6">
+            <Text className="text-center text-xl text-text-primary dark:text-white">
+              Session not found
+            </Text>
+          </View>
+        </SafeAreaView>
+      </GradientBackground>
     );
   }
 
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <FocusAwareStatusBar />
-      <View className="flex-1 items-center justify-center px-6">
-        <WelcomeMessage />
-        <CommunicationModeSelector
-          onTextMode={handleTextMode}
-          onVoiceMode={handleVoiceMode}
-        />
-      </View>
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView className="flex-1">
+        <FocusAwareStatusBar />
+        <View className="flex-1 items-center justify-center px-6">
+          <WelcomeMessage />
+          <CommunicationModeSelector
+            onTextMode={handleTextMode}
+            onVoiceMode={handleVoiceMode}
+          />
+        </View>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
