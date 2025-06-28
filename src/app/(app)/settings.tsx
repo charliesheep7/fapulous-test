@@ -9,6 +9,7 @@ import { ThemeItem } from '@/components/settings/theme-item';
 import {
   colors,
   FocusAwareStatusBar,
+  GradientBackground,
   ScrollView,
   Text,
   View,
@@ -22,7 +23,7 @@ export default function Settings() {
   const iconColor =
     colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
   return (
-    <>
+    <GradientBackground>
       <FocusAwareStatusBar />
 
       <ScrollView>
@@ -80,6 +81,6 @@ export default function Settings() {
           </View>
         </View>
       </ScrollView>
-    </>
+    </GradientBackground>
   );
 }

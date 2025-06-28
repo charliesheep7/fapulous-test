@@ -14,6 +14,13 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
+  ignorePatterns: [
+    'supabase/**/*',
+    'expo-env.d.ts',
+    '**/*.d.ts',
+    'android/**/*',
+    'ios/**/*',
+  ],
   rules: {
     'prettier/prettier': 'warn',
     'unicorn/filename-case': [
