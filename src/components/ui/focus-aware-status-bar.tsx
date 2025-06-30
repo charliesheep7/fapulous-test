@@ -1,5 +1,4 @@
 import { useFocusEffect } from 'expo-router';
-import { useColorScheme } from 'nativewind';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { SystemBars } from 'react-native-edge-to-edge';
@@ -7,7 +6,6 @@ import { SystemBars } from 'react-native-edge-to-edge';
 type Props = { hidden?: boolean };
 export const FocusAwareStatusBar = ({ hidden = false }: Props) => {
   const [isFocused, setIsFocused] = React.useState(true);
-  const { colorScheme } = useColorScheme();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -18,5 +16,6 @@ export const FocusAwareStatusBar = ({ hidden = false }: Props) => {
 
   if (Platform.OS === 'web') return null;
 
-  return isFocused ? <SystemBars style={colorScheme} hidden={hidden} /> : null;
+  // Always use light content since we have dark overlay for readability
+  return isFocused ? <SystemBars style="light" hidden={hidden} /> : null;
 };

@@ -25,7 +25,7 @@ export default function MoodSelectionPage() {
       createSession(selectedMoods);
 
       // Navigate to session intro screen
-      router.push('/(app)/session-intro');
+      router.push('/(app)/(stack)/session-intro');
     } catch (error) {
       console.error('Failed to create session:', error);
       // TODO: Show error message to user
@@ -40,7 +40,7 @@ export default function MoodSelectionPage() {
         {/* Header */}
         <View className="px-6 pb-6 pt-4">
           <View className="mb-6">
-            <Text className="mb-1 text-center text-2xl font-bold text-text-primary dark:text-white">
+            <Text className="mb-1 text-center text-2xl font-bold text-text-primary dark:text-text-primary">
               How are you feeling right now?
             </Text>
           </View>

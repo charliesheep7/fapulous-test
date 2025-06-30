@@ -9,9 +9,16 @@ type ItemProps = {
   value?: string;
   onPress?: () => void;
   icon?: React.ReactNode;
+  variant?: 'default' | 'destructive';
 };
 
-export const Item = ({ text, value, icon, onPress }: ItemProps) => {
+export const Item = ({
+  text,
+  value,
+  icon,
+  onPress,
+  variant = 'default',
+}: ItemProps) => {
   const isPressable = onPress !== undefined;
   return (
     <Pressable
@@ -21,10 +28,19 @@ export const Item = ({ text, value, icon, onPress }: ItemProps) => {
     >
       <View className="flex-row items-center">
         {icon && <View className="pr-2">{icon}</View>}
-        <Text tx={text} />
+        <Text
+          className={
+            variant === 'destructive'
+              ? 'text-danger-500 dark:text-danger-500'
+              : 'text-text-primary dark:text-text-primary'
+          }
+          tx={text}
+        />
       </View>
       <View className="flex-row items-center">
-        <Text className="text-neutral-600 dark:text-white">{value}</Text>
+        <Text className="dark:text-text-secondary text-neutral-600">
+          {value}
+        </Text>
         {isPressable && (
           <View className="pl-2">
             <ArrowRight />

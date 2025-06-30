@@ -15,34 +15,34 @@ const button = tv({
   variants: {
     variant: {
       default: {
-        container: 'bg-black dark:bg-white',
-        label: 'text-white dark:text-black',
-        indicator: 'text-white dark:text-black',
+        container: 'bg-discord-blurple dark:bg-discord-blurple',
+        label: 'text-white dark:text-white',
+        indicator: 'text-white dark:text-white',
       },
       secondary: {
-        container: 'bg-primary-600',
-        label: 'text-white',
-        indicator: 'text-white',
+        container: 'bg-discord-surface dark:bg-discord-elevated',
+        label: 'text-text-secondary dark:text-text-secondary',
+        indicator: 'text-text-secondary dark:text-text-secondary',
       },
       outline: {
-        container: 'border border-neutral-400',
-        label: 'text-black dark:text-neutral-100',
-        indicator: 'text-black dark:text-neutral-100',
+        container: 'border-discord-border dark:border-discord-border border',
+        label: 'text-text-primary dark:text-text-primary',
+        indicator: 'text-text-primary dark:text-text-primary',
       },
       destructive: {
-        container: 'bg-red-600',
-        label: 'text-white',
-        indicator: 'text-white',
+        container: 'bg-discord-red dark:bg-discord-red',
+        label: 'text-white dark:text-white',
+        indicator: 'text-white dark:text-white',
       },
       ghost: {
         container: 'bg-transparent',
-        label: 'text-black underline dark:text-white',
-        indicator: 'text-black dark:text-white',
+        label: 'text-primary dark:text-primary underline',
+        indicator: 'text-primary dark:text-primary',
       },
       link: {
         container: 'bg-transparent',
-        label: 'text-black',
-        indicator: 'text-black',
+        label: 'text-primary dark:text-primary',
+        indicator: 'text-primary dark:text-primary',
       },
     },
     size: {
@@ -63,9 +63,9 @@ const button = tv({
     },
     disabled: {
       true: {
-        container: 'bg-neutral-300 dark:bg-neutral-300',
-        label: 'text-neutral-600 dark:text-neutral-600',
-        indicator: 'text-neutral-400 dark:text-neutral-400',
+        container: 'bg-discord-hover dark:bg-discord-hover',
+        label: 'text-text-muted dark:text-text-muted',
+        indicator: 'text-text-muted dark:text-text-muted',
       },
     },
     fullWidth: {

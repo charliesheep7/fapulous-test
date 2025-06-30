@@ -41,7 +41,7 @@ export function ChatInterface() {
 
       {showAffirmationButton ? (
         <AffirmationButton
-          onPress={() => router.push('/(app)/affirmation')}
+          onPress={() => router.push('/(app)/(stack)/affirmation')}
           disabled={false}
         />
       ) : showGeneratingMessage ? (

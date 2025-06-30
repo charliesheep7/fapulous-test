@@ -10,7 +10,7 @@ import {
 
 export default function Fapulous() {
   const handleStartPress = () => {
-    router.push('/(app)/mood-selection');
+    router.push('/(app)/(stack)/mood-selection');
   };
 
   return (
@@ -26,7 +26,7 @@ export default function Fapulous() {
             onPress={handleStartPress}
             variant="outline"
             size="lg"
-            className="h-16 min-w-64 rounded-full border-2 border-white/30 bg-white/95 shadow-lg shadow-primary-200/50"
+            className="shadow-primary-200/50 h-16 min-w-64 rounded-full border-2 border-white/30 bg-white/95 shadow-lg"
             textClassName="text-primary-700 dark:text-primary-600 font-semibold text-xl tracking-wide"
           />
         </View>

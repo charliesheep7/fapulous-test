@@ -38,12 +38,12 @@ type VoiceStatus =
 
 function VoiceHeader({ onEmergencyExit }: { onEmergencyExit: () => void }) {
   return (
-    <View className="flex-row items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
+    <View className="border-discord-border dark:border-discord-border flex-row items-center justify-between border-b p-4">
       <View className="flex-1">
-        <Text className="text-center text-lg font-semibold text-text-primary dark:text-white">
+        <Text className="text-text-primary dark:text-text-primary text-center text-lg font-semibold">
           Micro-Therapy Session
         </Text>
-        <Text className="text-center text-sm text-text-secondary dark:text-gray-300">
+        <Text className="text-text-secondary dark:text-text-secondary text-center text-sm">
           Voice Mode
         </Text>
       </View>
@@ -61,11 +61,11 @@ function TranscriptDisplay({ transcript }: { transcript: string }) {
   if (!transcript) return null;
 
   return (
-    <View className="mt-8 w-full rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
-      <Text className="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-400">
+    <View className="bg-discord-surface dark:bg-discord-elevated mt-8 w-full rounded-lg p-4">
+      <Text className="text-text-secondary dark:text-text-secondary mb-2 text-sm font-semibold">
         Last AI Response:
       </Text>
-      <Text className="text-base text-gray-900 dark:text-gray-100">
+      <Text className="text-text-primary dark:text-text-primary text-base">
         {transcript}
       </Text>
     </View>
@@ -180,7 +180,7 @@ async function handleGenerateAffirmation(params: {
 
     console.log('Navigating to affirmation screen...');
     onStop();
-    router.push('/(app)/affirmation');
+    router.push('/(app)/(stack)/affirmation');
   } catch (error) {
     console.error('Failed to generate affirmation:', error);
     const fallbackAffirmation =
@@ -188,7 +188,7 @@ async function handleGenerateAffirmation(params: {
     console.log('Using fallback affirmation:', fallbackAffirmation);
     setAffirmation(fallbackAffirmation);
     onStop();
-    router.push('/(app)/affirmation');
+    router.push('/(app)/(stack)/affirmation');
   }
 }
 
@@ -232,7 +232,7 @@ function VoiceControls({
 
       <View className="flex-1 items-center justify-center px-6">
         <View className="mb-8">
-          <Text className="text-center text-xl font-medium text-text-primary dark:text-white">
+          <Text className="text-text-primary dark:text-text-primary text-center text-xl font-medium">
             {getStatusText(status, isSessionComplete)}
           </Text>
         </View>
@@ -269,12 +269,12 @@ function SessionNotFound() {
       <SafeAreaView className="flex-1">
         <FocusAwareStatusBar />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-xl text-text-primary dark:text-white">
+          <Text className="text-text-primary dark:text-text-primary text-center text-xl">
             Session not found
           </Text>
           <Button
             label="Go Home"
-            onPress={() => router.push('/(app)/')}
+            onPress={() => router.push('/(app)/(tabs)/')}
             className="mt-4"
           />
         </View>
@@ -487,15 +487,15 @@ function TopBars({ bar1Style, bar2Style, bar3Style }: any) {
     <View className="absolute -top-20 flex-row space-x-2">
       <Animated.View
         style={[bar1Style]}
-        className="h-4 w-1 rounded-full bg-primary-400"
+        className="bg-primary-400 h-4 w-1 rounded-full"
       />
       <Animated.View
         style={[bar2Style]}
-        className="h-6 w-1 rounded-full bg-primary-500"
+        className="bg-primary-500 h-6 w-1 rounded-full"
       />
       <Animated.View
         style={[bar3Style]}
-        className="h-5 w-1 rounded-full bg-primary-400"
+        className="bg-primary-400 h-5 w-1 rounded-full"
       />
     </View>
   );
@@ -506,15 +506,15 @@ function BottomBars({ bar1Style, bar2Style, bar4Style }: any) {
     <View className="absolute -bottom-20 flex-row space-x-2">
       <Animated.View
         style={[bar4Style]}
-        className="h-4 w-1 rounded-full bg-primary-400"
+        className="bg-primary-400 h-4 w-1 rounded-full"
       />
       <Animated.View
         style={[bar1Style]}
-        className="h-6 w-1 rounded-full bg-primary-500"
+        className="bg-primary-500 h-6 w-1 rounded-full"
       />
       <Animated.View
         style={[bar2Style]}
-        className="h-5 w-1 rounded-full bg-primary-400"
+        className="bg-primary-400 h-5 w-1 rounded-full"
       />
     </View>
   );
@@ -526,30 +526,30 @@ function SideBars({ bar1Style, bar2Style, bar3Style, bar4Style }: any) {
       <View className="absolute -left-20 flex-col space-y-2">
         <Animated.View
           style={[bar3Style]}
-          className="h-1 w-4 rounded-full bg-primary-400"
+          className="bg-primary-400 h-1 w-4 rounded-full"
         />
         <Animated.View
           style={[bar4Style]}
-          className="h-1 w-6 rounded-full bg-primary-500"
+          className="bg-primary-500 h-1 w-6 rounded-full"
         />
         <Animated.View
           style={[bar1Style]}
-          className="h-1 w-5 rounded-full bg-primary-400"
+          className="bg-primary-400 h-1 w-5 rounded-full"
         />
       </View>
 
       <View className="absolute -right-20 flex-col space-y-2">
         <Animated.View
           style={[bar2Style]}
-          className="h-1 w-4 rounded-full bg-primary-400"
+          className="bg-primary-400 h-1 w-4 rounded-full"
         />
         <Animated.View
           style={[bar3Style]}
-          className="h-1 w-6 rounded-full bg-primary-500"
+          className="bg-primary-500 h-1 w-6 rounded-full"
         />
         <Animated.View
           style={[bar4Style]}
-          className="h-1 w-5 rounded-full bg-primary-400"
+          className="bg-primary-400 h-1 w-5 rounded-full"
         />
       </View>
     </>
@@ -620,8 +620,8 @@ function SimpleWaveform({
 
 function RoundIndicator({ currentRound }: { currentRound: number }) {
   return (
-    <View className="absolute right-4 top-4 rounded-full bg-gray-200 px-2 py-1 dark:bg-gray-700">
-      <Text className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+    <View className="bg-discord-surface dark:bg-discord-elevated absolute right-4 top-4 rounded-full px-2 py-1">
+      <Text className="text-text-secondary dark:text-text-secondary text-xs font-semibold">
         {currentRound}/5
       </Text>
     </View>

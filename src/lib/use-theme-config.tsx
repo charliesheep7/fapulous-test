@@ -11,12 +11,12 @@ const DarkTheme: Theme = {
   ..._DarkTheme,
   colors: {
     ..._DarkTheme.colors,
-    primary: colors.primary[400], // Medium blue for dark theme
-    background: colors.charcoal[950], // Darkest blue-black background
-    text: colors.charcoal[100], // Light blue-gray text
-    border: colors.charcoal[600], // Medium blue-gray borders
-    card: colors.charcoal[850], // Dark blue card backgrounds
-    notification: colors.primary[500], // Deep Sky Blue for notifications
+    primary: colors.discord.blurple, // Discord blurple for primary actions
+    background: colors.discord.background, // Discord main background (#131317)
+    text: colors.discord.textPrimary, // Discord brightest text (#F5F5F5) for nav/headers
+    border: colors.discord.border, // Discord subtle borders
+    card: colors.discord.surface, // Discord surface areas (#1C1D23)
+    notification: colors.discord.accent, // Discord accent color for notifications
   },
 };
 
@@ -24,12 +24,12 @@ const LightTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.primary[500], // Deep Sky Blue (your main brand color)
-    background: colors.background.primary, // Pure white background
-    text: colors.text.primary, // Your dark blue text (#031340)
-    border: colors.neutral[300], // Light blue-gray borders
-    card: colors.background.secondary, // Very light blue-white for cards
-    notification: colors.primary[500], // Deep Sky Blue for notifications
+    primary: colors.primary[500], // Keep blurple as primary for light theme
+    background: colors.white, // Pure white background for light theme
+    text: colors.black, // Black text for light theme
+    border: colors.neutral[300], // Light borders for light theme
+    card: colors.neutral[50], // Very light cards for light theme
+    notification: colors.primary[500], // Blurple for notifications
   },
 };
 

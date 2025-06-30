@@ -15,10 +15,10 @@ import { useSessionStore } from '@/lib/stores/session-store';
 function WelcomeMessage() {
   return (
     <View className="mb-12">
-      <Text className="mb-4 text-center text-3xl font-bold text-text-primary dark:text-white">
+      <Text className="mb-4 text-center text-3xl font-bold text-text-primary dark:text-text-primary">
         I have this micro-therapy to make you feel a bit better.
       </Text>
-      <Text className="text-center text-lg text-text-secondary dark:text-gray-300">
+      <Text className="text-center text-lg text-text-secondary dark:text-text-secondary">
         Choose how you'd like to communicate
       </Text>
     </View>
@@ -64,12 +64,12 @@ export default function SessionIntroPage() {
 
   const handleTextMode = () => {
     setCommunicationMode('text');
-    router.push('/(app)/chat');
+    router.push('/(app)/(stack)/chat');
   };
 
   const handleVoiceMode = () => {
     setCommunicationMode('voice');
-    router.push('/(app)/voice-chat');
+    router.push('/(app)/(stack)/voice-chat');
   };
 
   if (!currentSession) {
@@ -78,7 +78,7 @@ export default function SessionIntroPage() {
         <SafeAreaView className="flex-1">
           <FocusAwareStatusBar />
           <View className="flex-1 items-center justify-center px-6">
-            <Text className="text-center text-xl text-text-primary dark:text-white">
+            <Text className="text-center text-xl text-text-primary dark:text-text-primary">
               Session not found
             </Text>
           </View>

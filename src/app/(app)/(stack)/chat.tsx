@@ -19,7 +19,7 @@ function SessionNotFound() {
       <SafeAreaView className="flex-1">
         <FocusAwareStatusBar />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-xl text-text-primary dark:text-white">
+          <Text className="text-center text-xl text-text-primary dark:text-text-primary">
             Session not found
           </Text>
           <Button
@@ -39,14 +39,11 @@ function ChatHeader({ session }: { session: FapulousSession }) {
   ).length;
 
   return (
-    <View className="border-b border-gray-200 p-4 dark:border-gray-700">
+    <View className="border-b border-discord-border p-4 dark:border-discord-border">
       <View className="flex-row items-center justify-between">
         <View className="flex-1">
-          <Text className="text-center text-lg font-semibold text-text-primary dark:text-white">
-            Micro-Therapy Session
-          </Text>
-          <Text className="text-center text-sm text-text-secondary dark:text-gray-300">
-            Mode: {session.communicationMode || 'Not selected'}
+          <Text className="text-center text-lg font-semibold text-text-primary dark:text-text-primary">
+            Fappy
           </Text>
         </View>
 

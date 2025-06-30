@@ -18,12 +18,12 @@ function AffirmationNotFound() {
       <SafeAreaView className="flex-1">
         <FocusAwareStatusBar />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-xl text-text-primary dark:text-white">
+          <Text className="text-center text-xl text-text-primary dark:text-text-primary">
             Affirmation not found
           </Text>
           <Button
             label="Go Home"
-            onPress={() => router.push('/(app)/')}
+            onPress={() => router.push('/(app)/(tabs)/')}
             className="mt-4"
           />
         </View>
@@ -39,10 +39,10 @@ function AffirmationCard({ affirmation }: { affirmation: string }) {
         entering={FadeInUp.delay(200).duration(800)}
         className="mb-8"
       >
-        <Text className="text-center text-2xl font-bold text-text-primary dark:text-white">
+        <Text className="text-center text-2xl font-bold text-text-primary dark:text-text-primary">
           Your Affirmation
         </Text>
-        <Text className="mt-2 text-center text-gray-600 dark:text-gray-400">
+        <Text className="mt-2 text-center text-text-secondary dark:text-text-secondary">
           A personal message for you
         </Text>
       </Animated.View>
@@ -63,7 +63,7 @@ function AffirmationCard({ affirmation }: { affirmation: string }) {
         entering={FadeInUp.delay(600).duration(600)}
         className="mt-8"
       >
-        <Text className="text-center text-sm text-gray-500 dark:text-gray-400">
+        <Text className="text-center text-sm text-text-muted dark:text-text-muted">
           Take a moment to let this sink in
         </Text>
       </Animated.View>
@@ -83,7 +83,7 @@ export default function AffirmationPage() {
   const handleFinish = () => {
     console.log('🏁 Finishing session and navigating home');
     clearSession();
-    router.push('/(app)/');
+    router.push('/(app)/(tabs)/');
   };
 
   if (!currentSession) {
