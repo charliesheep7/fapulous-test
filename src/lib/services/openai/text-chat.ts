@@ -1,18 +1,33 @@
-import OpenAI from 'openai';
-
 import {
   FAPULOUS_MENTOR_SYSTEM_PROMPT,
   OPENING_MESSAGE_PROMPT,
 } from '@/lib/config/prompts';
-import { Env } from '@/lib/env';
+import { supabase } from '@/lib/supabase';
 import type { OpenAIMessage } from '@/types/chat';
 import type { MoodType } from '@/types/mood';
 import type { ChatMessage } from '@/types/session';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: Env.OPENAI_API_KEY,
-});
+// Helper function to call OpenAI via Supabase Edge Function
+async function callOpenAI(
+  messages: OpenAIMessage[],
+  maxTokens = 500,
+  temperature = 0.9
+) {
+  const { data, error } = await supabase.functions.invoke('text-chat', {
+    body: {
+      messages,
+      max_tokens: maxTokens,
+      temperature,
+    },
+  });
+
+  if (error) {
+    console.error('Supabase Edge Function Error:', error);
+    throw new Error(`Supabase function error: ${error.message}`);
+  }
+
+  return data;
+}
 
 // Build system prompt with mood context
 function buildSystemPromptWithMoods(selectedMoods: MoodType[]): string {
@@ -32,15 +47,14 @@ export async function generateOpeningMessage(
     const moodsList = selectedMoods.join(', ');
     const prompt = OPENING_MESSAGE_PROMPT.replace('{moods}', moodsList);
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
+    const response = await callOpenAI(
+      [
         { role: 'system', content: FAPULOUS_MENTOR_SYSTEM_PROMPT },
         { role: 'user', content: prompt },
       ],
-      max_tokens: 200,
-      temperature: 0.9,
-    });
+      200,
+      0.9
+    );
 
     const openingMessage = response.choices[0]?.message?.content;
 
@@ -82,13 +96,8 @@ export async function sendChatMessage(
       { role: 'user', content: userMessage },
     ];
 
-    // Call OpenAI API
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages,
-      max_tokens: 500,
-      temperature: 0.9,
-    });
+    // Call OpenAI API via Supabase Edge Function
+    const response = await callOpenAI(messages, 500, 0.9);
 
     const aiResponse = response.choices[0]?.message?.content;
 
@@ -98,7 +107,7 @@ export async function sendChatMessage(
 
     return aiResponse;
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('Supabase Edge Function Error:', error);
 
     // Handle different error types
     if (error instanceof Error) {
@@ -148,12 +157,11 @@ ${conversationHistory
 
 Create one meaningful affirmation:`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: affirmationPrompt }],
-      max_tokens: 100,
-      temperature: 0.8,
-    });
+    const response = await callOpenAI(
+      [{ role: 'user', content: affirmationPrompt }],
+      100,
+      0.8
+    );
 
     const affirmation = response.choices[0]?.message?.content?.trim();
 
