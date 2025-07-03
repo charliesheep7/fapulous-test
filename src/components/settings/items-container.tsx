@@ -18,12 +18,12 @@ export const ItemsContainer = ({
     <>
       {title && (
         <Text
-          className={`pb-2 pt-4 text-lg ${titleMuted ? 'text-text-muted dark:text-text-muted' : 'text-text-primary dark:text-text-primary'}`}
+          className={`pb-2 pt-4 text-lg ${titleMuted ? 'text-gray-500 dark:text-gray-400' : 'text-black dark:text-gray-100'}`}
           tx={title}
         />
       )}
       {
-        <View className=" dark:border-discord-border dark:bg-discord-elevated rounded-md border border-neutral-200">
+        <View className="rounded-md border border-gray-200 dark:border-interactive dark:bg-gray-850">
           {children}
         </View>
       }

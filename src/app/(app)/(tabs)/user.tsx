@@ -6,7 +6,6 @@ import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
 import { ThemeItem } from '@/components/settings/theme-item';
 import {
-  colors,
   FocusAwareStatusBar,
   GradientBackground,
   ScrollView,
@@ -20,7 +19,7 @@ export default function User() {
   const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
-    colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+    colorScheme === 'dark' ? '#9CA3AF' : '#6B7280';
   return (
     <GradientBackground>
       <FocusAwareStatusBar />

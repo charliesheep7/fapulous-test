@@ -22,8 +22,8 @@ function getInputStyles(isOverLimit: boolean, isDark: boolean) {
   const base = 'max-h-24 rounded-2xl border px-4 py-3 text-base leading-5';
   const border = isOverLimit
     ? 'border-red-300 bg-red-50 dark:border-red-600 dark:bg-red-900/20'
-    : 'border-discord-inputBorder bg-discord-input dark:border-discord-inputBorder dark:bg-discord-input';
-  const text = isDark ? 'text-text-primary' : 'text-black';
+    : 'border-gray-300 bg-input dark:border-gray-700 dark:bg-gray-800';
+  const text = isDark ? 'text-gray-100' : 'text-black';
   return `${base} ${border} ${text}`;
 }
 
@@ -47,7 +47,7 @@ export function ChatInput({
   };
 
   return (
-    <View className="border-discord-border dark:border-discord-border dark:bg-discord-background border-t bg-white p-4">
+    <View className="border-t border-subtle bg-white p-4 dark:border-interactive dark:bg-gray-900">
       <View className="flex-row items-end space-x-3">
         <View className="flex-1">
           <TextInput
@@ -75,14 +75,14 @@ export function ChatInput({
           className={`rounded-full p-3 ${
             canSend
               ? 'bg-primary-500 dark:bg-primary-600'
-              : 'bg-discord-surface dark:bg-discord-elevated'
+              : 'bg-gray-850 dark:bg-gray-700'
           }`}
         >
           <Text
             className={`text-lg font-semibold ${
               canSend
                 ? 'text-white'
-                : 'text-text-secondary dark:text-text-secondary'
+                : 'text-gray-500 dark:text-gray-300'
             }`}
           >
             →

@@ -31,14 +31,14 @@ export const Item = ({
         <Text
           className={
             variant === 'destructive'
-              ? 'text-danger-500 dark:text-danger-500'
-              : 'text-text-primary dark:text-text-primary'
+              ? 'text-red-500 dark:text-red-500'
+              : 'text-black dark:text-gray-100'
           }
           tx={text}
         />
       </View>
       <View className="flex-row items-center">
-        <Text className="dark:text-text-secondary text-neutral-600">
+        <Text className="text-gray-600 dark:text-gray-500">
           {value}
         </Text>
         {isPressable && (

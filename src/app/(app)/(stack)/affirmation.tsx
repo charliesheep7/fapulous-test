@@ -18,7 +18,7 @@ function AffirmationNotFound() {
       <SafeAreaView className="flex-1">
         <FocusAwareStatusBar />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-center text-xl text-text-primary dark:text-text-primary">
+          <Text className="text-center text-xl text-black dark:text-gray-100">
             Affirmation not found
           </Text>
           <Button
@@ -39,10 +39,10 @@ function AffirmationCard({ affirmation }: { affirmation: string }) {
         entering={FadeInUp.delay(200).duration(800)}
         className="mb-8"
       >
-        <Text className="text-center text-2xl font-bold text-text-primary dark:text-text-primary">
+        <Text className="text-center text-2xl font-bold text-black dark:text-gray-100">
           Your Affirmation
         </Text>
-        <Text className="mt-2 text-center text-text-secondary dark:text-text-secondary">
+        <Text className="mt-2 text-center text-gray-600 dark:text-gray-300">
           A personal message for you
         </Text>
       </Animated.View>
@@ -63,7 +63,7 @@ function AffirmationCard({ affirmation }: { affirmation: string }) {
         entering={FadeInUp.delay(600).duration(600)}
         className="mt-8"
       >
-        <Text className="text-center text-sm text-text-muted dark:text-text-muted">
+        <Text className="text-center text-sm text-gray-500 dark:text-gray-400">
           Take a moment to let this sink in
         </Text>
       </Animated.View>

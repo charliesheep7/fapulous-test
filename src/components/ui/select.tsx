@@ -6,7 +6,7 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { useColorScheme } from 'nativewind';
 import * as React from 'react';
-import type { FieldValues } from 'react-hook-form';
+import type { FieldValues, Control, Path as FormPath, RegisterOptions } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 import { Platform, View } from 'react-native';
 import { Pressable, type PressableProps } from 'react-native';
@@ -14,10 +14,8 @@ import type { SvgProps } from 'react-native-svg';
 import Svg, { Path } from 'react-native-svg';
 import { tv } from 'tailwind-variants';
 
-import colors from '@/components/ui/colors';
 import { CaretDown } from '@/components/ui/icons';
 
-import type { InputControllerType } from './input';
 import { useModal } from './modal';
 import { Modal } from './modal';
 import { Text } from './text';
@@ -25,28 +23,28 @@ import { Text } from './text';
 const selectTv = tv({
   slots: {
     container: 'mb-4',
-    label: 'text-grey-100 mb-1 text-lg dark:text-neutral-100',
+    label: 'text-gray-300 mb-1 text-lg dark:text-gray-100',
     input:
-      'border-grey-50 mt-0 flex-row items-center justify-center rounded-xl border-[0.5px] p-3  dark:border-neutral-500 dark:bg-neutral-800',
-    inputValue: 'dark:text-neutral-100',
+      'border-gray-300 mt-0 flex-row items-center justify-center rounded-xl border-[0.5px] p-3 dark:border-gray-500 dark:bg-gray-800',
+    inputValue: 'dark:text-gray-100',
   },
 
   variants: {
     focused: {
       true: {
-        input: 'border-neutral-600',
+        input: 'border-gray-600',
       },
     },
     error: {
       true: {
-        input: 'border-danger-600',
-        label: 'text-danger-600 dark:text-danger-600',
-        inputValue: 'text-danger-600',
+        input: 'border-red-600',
+        label: 'text-red-600 dark:text-red-600',
+        inputValue: 'text-red-600',
       },
     },
     disabled: {
       true: {
-        input: 'bg-neutral-200',
+        input: 'bg-gray-200',
       },
     },
   },
@@ -97,7 +95,7 @@ export const Options = React.forwardRef<BottomSheetModal, OptionsProps>(
         index={0}
         snapPoints={snapPoints}
         backgroundStyle={{
-          backgroundColor: isDark ? colors.neutral[800] : colors.white,
+          backgroundColor: isDark ? '#1f2937' : '#f9fafb',
         }}
       >
         <List
@@ -123,10 +121,10 @@ const Option = React.memo(
   }) => {
     return (
       <Pressable
-        className="flex-row items-center border-b border-neutral-300 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
+        className="flex-row items-center border-b border-gray-300 bg-white px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
         {...props}
       >
-        <Text className="flex-1 dark:text-neutral-100 ">{label}</Text>
+        <Text className="flex-1 dark:text-gray-100 ">{label}</Text>
         {selected && <Check />}
       </Pressable>
     );
@@ -144,8 +142,14 @@ export interface SelectProps {
   testID?: string;
 }
 interface ControlledSelectProps<T extends FieldValues>
-  extends SelectProps,
-    InputControllerType<T> {}
+  extends SelectProps {
+  name: FormPath<T>;
+  control: Control<T>;
+  rules?: Omit<
+    RegisterOptions<T, FormPath<T>>,
+    'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'
+  >;
+}
 
 export const Select = (props: SelectProps) => {
   const {
@@ -210,7 +214,7 @@ export const Select = (props: SelectProps) => {
         {error && (
           <Text
             testID={`${testID}-error`}
-            className="text-sm text-danger-300 dark:text-danger-600"
+            className="text-sm text-red-300 dark:text-red-600"
           >
             {error}
           </Text>

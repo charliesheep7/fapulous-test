@@ -2,7 +2,7 @@ import { useColorScheme } from 'nativewind';
 import React from 'react';
 
 import type { OptionType } from '@/components/ui';
-import { colors, Options, useModal } from '@/components/ui';
+import { Options, useModal } from '@/components/ui';
 import { Palette } from '@/components/ui/icons';
 import type { ColorSchemeType } from '@/lib';
 import { translate, useSelectedTheme } from '@/lib';
@@ -15,7 +15,7 @@ export const ThemeItem = () => {
   const modal = useModal();
 
   const iconColor =
-    colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+    colorScheme === 'dark' ? '#9CA3AF' : '#64748B';
 
   const onSelect = React.useCallback(
     (option: OptionType) => {

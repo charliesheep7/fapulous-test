@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import colors from '@/components/ui/colors';
-
 import { Text } from './text';
 
 const SIZE = 20;
@@ -72,7 +70,7 @@ const Label = ({ text, testID, className = '' }: LabelProps) => {
 };
 
 export const CheckboxIcon = ({ checked = false }: IconProps) => {
-  const color = checked ? colors.primary[300] : colors.charcoal[400];
+  const color = checked ? '#4F46E5' : '#9CA3AF';
   return (
     <MotiView
       style={{
@@ -143,7 +141,7 @@ export const Checkbox = Object.assign(CheckboxBase, {
 });
 
 export const RadioIcon = ({ checked = false }: IconProps) => {
-  const color = checked ? colors.primary[300] : colors.charcoal[400];
+  const color = checked ? '#4F46E5' : '#9CA3AF';
   return (
     <MotiView
       style={{
@@ -203,7 +201,7 @@ export const SwitchIcon = ({ checked = false }: IconProps) => {
     ? THUMB_OFFSET
     : WIDTH - THUMB_WIDTH - THUMB_OFFSET;
 
-  const backgroundColor = checked ? colors.primary[300] : colors.charcoal[400];
+  const backgroundColor = checked ? '#4F46E5' : '#9CA3AF';
 
   return (
     <View className="w-[50px] justify-center">

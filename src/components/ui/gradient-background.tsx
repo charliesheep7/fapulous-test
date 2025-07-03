@@ -3,7 +3,6 @@ import { useColorScheme } from 'nativewind';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import colors from './colors';
 import { StatusBarOverlay } from './status-bar-overlay';
 
 type Props = {
@@ -21,10 +20,10 @@ export function GradientBackground({ children }: Props) {
       colors={
         isLightMode
           ? [
-              colors.cyan[100], // #CFFAFE - top-left
-              colors.sky[50], // #F0F9FF
-              colors.gray[50], // #F9FAFB
-              colors.slate[50], // #F8FAFC - bottom-right
+              '#CFFAFE', // cyan-100 - top-left
+              '#F0F9FF', // sky-50
+              '#F9FAFB', // gray-50
+              '#F8FAFC', // slate-50 - bottom-right
             ]
           : [
               '#E78629', // Bright orange/amber - top-left

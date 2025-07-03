@@ -15,11 +15,11 @@ import { useSessionStore } from '@/lib/stores/session-store';
 function WelcomeMessage() {
   return (
     <View className="mb-12">
-      <Text className="mb-4 text-center text-3xl font-bold text-text-primary dark:text-text-primary">
-        I have this micro-therapy to make you feel a bit better.
+      <Text className="mb-4 text-center text-3xl font-bold text-black dark:text-gray-100">
+        Ready to begin your therapy session?
       </Text>
-      <Text className="text-center text-lg text-text-secondary dark:text-text-secondary">
-        Choose how you'd like to communicate
+      <Text className="text-center text-lg text-gray-600 dark:text-gray-300">
+        Let's explore your feelings together in a safe, supportive environment.
       </Text>
     </View>
   );
@@ -78,7 +78,7 @@ export default function SessionIntroPage() {
         <SafeAreaView className="flex-1">
           <FocusAwareStatusBar />
           <View className="flex-1 items-center justify-center px-6">
-            <Text className="text-center text-xl text-text-primary dark:text-text-primary">
+            <Text className="text-center text-xl text-black dark:text-gray-100">
               Session not found
             </Text>
           </View>

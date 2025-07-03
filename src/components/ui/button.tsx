@@ -15,34 +15,34 @@ const button = tv({
   variants: {
     variant: {
       default: {
-        container: 'bg-discord-blurple dark:bg-discord-blurple',
+        container: 'bg-primary-500 dark:bg-primary-500',
         label: 'text-white dark:text-white',
         indicator: 'text-white dark:text-white',
       },
       secondary: {
-        container: 'bg-discord-surface dark:bg-discord-elevated',
-        label: 'text-text-secondary dark:text-text-secondary',
-        indicator: 'text-text-secondary dark:text-text-secondary',
+        container: 'bg-gray-850 dark:bg-gray-700',
+        label: 'text-gray-500 dark:text-gray-300',
+        indicator: 'text-gray-500 dark:text-gray-300',
       },
       outline: {
-        container: 'border-discord-border dark:border-discord-border border',
-        label: 'text-text-primary dark:text-text-primary',
-        indicator: 'text-text-primary dark:text-text-primary',
+        container: 'border-subtle dark:border-interactive border',
+        label: 'text-gray-100 dark:text-gray-100',
+        indicator: 'text-gray-100 dark:text-gray-100',
       },
       destructive: {
-        container: 'bg-discord-red dark:bg-discord-red',
+        container: 'bg-red-500 dark:bg-red-500',
         label: 'text-white dark:text-white',
         indicator: 'text-white dark:text-white',
       },
       ghost: {
         container: 'bg-transparent',
-        label: 'text-primary dark:text-primary underline',
-        indicator: 'text-primary dark:text-primary',
+        label: 'text-primary-500 dark:text-primary-500 underline',
+        indicator: 'text-primary-500 dark:text-primary-500',
       },
       link: {
         container: 'bg-transparent',
-        label: 'text-primary dark:text-primary',
-        indicator: 'text-primary dark:text-primary',
+        label: 'text-primary-500 dark:text-primary-500',
+        indicator: 'text-primary-500 dark:text-primary-500',
       },
     },
     size: {
@@ -63,9 +63,9 @@ const button = tv({
     },
     disabled: {
       true: {
-        container: 'bg-discord-hover dark:bg-discord-hover',
-        label: 'text-text-muted dark:text-text-muted',
-        indicator: 'text-text-muted dark:text-text-muted',
+        container: 'bg-gray-700 dark:bg-gray-700',
+        label: 'text-muted dark:text-muted',
+        indicator: 'text-muted dark:text-muted',
       },
     },
     fullWidth: {
@@ -145,3 +145,5 @@ export const Button = React.forwardRef<View, Props>(
     );
   }
 );
+
+Button.displayName = 'Button';

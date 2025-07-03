@@ -38,12 +38,12 @@ type VoiceStatus =
 
 function VoiceHeader({ onEmergencyExit }: { onEmergencyExit: () => void }) {
   return (
-    <View className="border-discord-border dark:border-discord-border flex-row items-center justify-between border-b p-4">
+    <View className="flex-row items-center justify-between border-b border-subtle p-4 dark:border-interactive">
       <View className="flex-1">
-        <Text className="text-text-primary dark:text-text-primary text-center text-lg font-semibold">
+        <Text className="text-center text-lg font-semibold text-black dark:text-gray-100">
           Micro-Therapy Session
         </Text>
-        <Text className="text-text-secondary dark:text-text-secondary text-center text-sm">
+        <Text className="text-center text-sm text-gray-600 dark:text-gray-300">
           Voice Mode
         </Text>
       </View>
@@ -61,11 +61,11 @@ function TranscriptDisplay({ transcript }: { transcript: string }) {
   if (!transcript) return null;
 
   return (
-    <View className="bg-discord-surface dark:bg-discord-elevated mt-8 w-full rounded-lg p-4">
-      <Text className="text-text-secondary dark:text-text-secondary mb-2 text-sm font-semibold">
+    <View className="mt-8 w-full rounded-lg bg-gray-850 p-4 dark:bg-gray-700">
+      <Text className="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300">
         Last AI Response:
       </Text>
-      <Text className="text-text-primary dark:text-text-primary text-base">
+      <Text className="text-base text-black dark:text-gray-100">
         {transcript}
       </Text>
     </View>
@@ -232,7 +232,7 @@ function VoiceControls({
 
       <View className="flex-1 items-center justify-center px-6">
         <View className="mb-8">
-          <Text className="text-text-primary dark:text-text-primary text-center text-xl font-medium">
+          <Text className="text-center text-xl font-medium text-black dark:text-gray-100">
             {getStatusText(status, isSessionComplete)}
           </Text>
         </View>
@@ -269,7 +269,7 @@ function SessionNotFound() {
       <SafeAreaView className="flex-1">
         <FocusAwareStatusBar />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-text-primary dark:text-text-primary text-center text-xl">
+          <Text className="text-center text-xl text-black dark:text-gray-100">
             Session not found
           </Text>
           <Button
@@ -620,8 +620,8 @@ function SimpleWaveform({
 
 function RoundIndicator({ currentRound }: { currentRound: number }) {
   return (
-    <View className="bg-discord-surface dark:bg-discord-elevated absolute right-4 top-4 rounded-full px-2 py-1">
-      <Text className="text-text-secondary dark:text-text-secondary text-xs font-semibold">
+    <View className="absolute right-4 top-4 rounded-full bg-gray-850 px-2 py-1 dark:bg-gray-700">
+      <Text className="text-xs font-semibold text-gray-600 dark:text-gray-300">
         {currentRound}/5
       </Text>
     </View>
