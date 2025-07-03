@@ -4,7 +4,6 @@ import { useColorScheme } from 'nativewind';
 
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
-import { ThemeItem } from '@/components/settings/theme-item';
 import {
   FocusAwareStatusBar,
   GradientBackground,
@@ -30,7 +29,6 @@ export default function User() {
             {translate('settings.title')}
           </Text>
           <ItemsContainer title="settings.generale" titleMuted={true}>
-            <ThemeItem />
             <Item
               text="settings.discord"
               icon={<Discord color={iconColor} />}
