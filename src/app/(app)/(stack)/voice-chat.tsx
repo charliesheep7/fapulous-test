@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useColorScheme } from 'nativewind';
 import * as React from 'react';
 import { useState } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
@@ -19,6 +20,7 @@ import {
   Text,
   View,
 } from '@/components/ui';
+import { ChevronLeft } from '@/components/ui/icons';
 import {
   startVoiceSession,
   stopVoiceSession,
@@ -36,9 +38,27 @@ type VoiceStatus =
   | 'ai-speaking'
   | 'error';
 
+function BackButton() {
+  const { colorScheme } = useColorScheme();
+  
+  return (
+    <TouchableOpacity
+      onPress={() => router.back()}
+      className="flex-row items-center justify-center p-2"
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <ChevronLeft color={colorScheme === 'dark' ? '#F5F5F5' : '#000'} />
+    </TouchableOpacity>
+  );
+}
+
 function VoiceHeader({ onEmergencyExit }: { onEmergencyExit: () => void }) {
   return (
     <View className="flex-row items-center justify-between border-b border-subtle p-4 dark:border-interactive">
+      <View className="flex-row items-center">
+        <BackButton />
+      </View>
+      
       <View className="flex-1">
         <Text className="text-center text-lg font-semibold text-black dark:text-gray-100">
           Micro-Therapy Session
@@ -47,12 +67,15 @@ function VoiceHeader({ onEmergencyExit }: { onEmergencyExit: () => void }) {
           Voice Mode
         </Text>
       </View>
-      <TouchableOpacity
-        onPress={onEmergencyExit}
-        className="rounded-full bg-red-500 p-2"
-      >
-        <Text className="text-sm font-bold text-white">✕</Text>
-      </TouchableOpacity>
+      
+      <View className="flex-row items-center">
+        <TouchableOpacity
+          onPress={onEmergencyExit}
+          className="rounded-full bg-red-500 p-2"
+        >
+          <Text className="text-sm font-bold text-white">✕</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

@@ -15,10 +15,10 @@ export function MessageBubble({ message }: Props) {
       className={`mb-3 flex-row ${isUser ? 'justify-end' : 'justify-start'}`}
     >
       <View
-        className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-          isUser
-            ? 'bg-primary-500 dark:bg-primary-600'
-            : 'bg-gray-100 dark:bg-gray-700'
+        className={`max-w-[80%] ${
+          isUser 
+            ? 'rounded-2xl bg-primary-500 px-4 py-3 dark:bg-primary-600'
+            : 'px-2 py-2'
         }`}
       >
         <Text

@@ -19,12 +19,12 @@ function countWords(text: string): number {
 }
 
 function getInputStyles(isOverLimit: boolean, isDark: boolean) {
-  const base = 'max-h-24 rounded-2xl border px-4 py-3 text-base leading-5';
-  const border = isOverLimit
-    ? 'border-red-300 bg-red-50 dark:border-red-600 dark:bg-red-900/20'
-    : 'border-gray-300 bg-input dark:border-gray-700 dark:bg-gray-800';
+  const base = 'max-h-24 text-base leading-5 bg-transparent';
+  const errorBg = isOverLimit
+    ? 'bg-red-50 rounded-lg px-2 py-1 dark:bg-red-900/20'
+    : 'bg-transparent';
   const text = isDark ? 'text-gray-100' : 'text-black';
-  return `${base} ${border} ${text}`;
+  return `${base} ${errorBg} ${text}`;
 }
 
 export function ChatInput({
@@ -47,47 +47,43 @@ export function ChatInput({
   };
 
   return (
-    <View className="border-t border-subtle bg-white p-4 dark:border-interactive dark:bg-gray-900">
-      <View className="flex-row items-end space-x-3">
-        <View className="flex-1">
-          <TextInput
-            value={message}
-            onChangeText={setMessage}
-            placeholder={placeholder}
-            placeholderTextColor={
-              colorScheme === 'dark' ? '#9CA3AF' : '#6B7280'
-            }
-            multiline
-            editable={!disabled}
-            className={getInputStyles(isOverLimit, colorScheme === 'dark')}
-            style={{ textAlignVertical: 'top', maxHeight: 100 }}
-          />
-          {isOverLimit && (
-            <Text className="mt-1 text-xs text-red-500 dark:text-red-400">
-              Message too long ({wordCount}/200 words)
-            </Text>
-          )}
-        </View>
+    <View className="px-4 pb-4">
+      <View className="relative rounded-2xl bg-white p-4 dark:bg-gray-800">
+        <View className="flex-row items-end">
+          <View className="flex-1">
+            <TextInput
+              value={message}
+              onChangeText={setMessage}
+              placeholder={placeholder}
+              placeholderTextColor={
+                colorScheme === 'dark' ? '#9CA3AF' : '#6B7280'
+              }
+              multiline
+              editable={!disabled}
+              className={getInputStyles(isOverLimit, colorScheme === 'dark')}
+              style={{ textAlignVertical: 'top', maxHeight: 100 }}
+            />
+            {isOverLimit && (
+              <Text className="mt-1 text-xs text-red-500 dark:text-red-400">
+                Message too long ({wordCount}/200 words)
+              </Text>
+            )}
+          </View>
 
-        <TouchableOpacity
-          onPress={handleSend}
-          disabled={!canSend}
-          className={`rounded-full p-3 ${
-            canSend
-              ? 'bg-primary-500 dark:bg-primary-600'
-              : 'bg-gray-850 dark:bg-gray-700'
-          }`}
-        >
-          <Text
-            className={`text-lg font-semibold ${
-              canSend
-                ? 'text-white'
-                : 'text-gray-500 dark:text-gray-300'
-            }`}
-          >
-            →
-          </Text>
-        </TouchableOpacity>
+          <View className="ml-3 h-8 w-8 items-center justify-center">
+            <TouchableOpacity
+              onPress={handleSend}
+              disabled={!canSend}
+              className={`rounded-full bg-primary-500 p-1.5 dark:bg-primary-600 ${
+                canSend ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <Text className="text-sm font-semibold text-white">
+                ↑
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );
