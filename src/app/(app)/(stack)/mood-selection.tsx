@@ -38,7 +38,7 @@ export default function MoodSelectionPage() {
         <FocusAwareStatusBar />
 
         {/* Header */}
-        <View className="px-6 pb-6 pt-4">
+        <View className="px-6 pb-6 pt-12">
           <View className="mb-6">
             <Text className="mb-1 text-center text-2xl font-bold text-black dark:text-gray-100">
               How are you feeling right now?

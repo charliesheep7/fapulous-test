@@ -56,7 +56,7 @@ function ChatHeader({ session }: { session: FapulousSession }) {
   ).length;
 
   return (
-    <View className="border-b border-subtle p-4 dark:border-interactive">
+    <View className="p-4">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center">
           <BackButton />

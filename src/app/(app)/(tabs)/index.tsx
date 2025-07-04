@@ -26,7 +26,7 @@ export default function Fapulous() {
             onPress={handleStartPress}
             variant="outline"
             size="lg"
-            className="shadow-primary-200/50 h-16 min-w-64 rounded-full border-2 border-white/30 bg-white/95 shadow-lg"
+            className="h-16 min-w-64 rounded-full bg-white/90 shadow-xl backdrop-blur-sm border-0"
             textClassName="text-primary-700 dark:text-primary-600 font-semibold text-xl tracking-wide"
           />
         </View>
