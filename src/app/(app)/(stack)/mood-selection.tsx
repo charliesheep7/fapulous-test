@@ -24,8 +24,8 @@ export default function MoodSelectionPage() {
       // Create a new session with selected moods
       createSession(selectedMoods);
 
-      // Navigate to session intro screen
-      router.push('/(app)/(stack)/session-intro');
+      // Navigate to porn question screen
+      router.push('/(app)/(stack)/porn-question');
     } catch (error) {
       console.error('Failed to create session:', error);
       // TODO: Show error message to user
@@ -57,7 +57,6 @@ export default function MoodSelectionPage() {
             label="Continue"
             onPress={handleContinue}
             disabled={!isSelectionValid}
-            variant="secondary"
             size="lg"
           />
         </View>

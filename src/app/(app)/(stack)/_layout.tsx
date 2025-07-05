@@ -36,6 +36,19 @@ export default function StackLayout() {
         }}
       />
       <Stack.Screen
+        name="porn-question"
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerLeft: () => <BackButton />,
+          headerShadowVisible: false,
+          headerTransparent: true,
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+        }}
+      />
+      <Stack.Screen
         name="session-intro"
         options={{
           headerShown: true,

@@ -34,7 +34,7 @@ require('dotenv').config({
 
 // TODO: Replace these values with your own
 
-const BUNDLE_ID = 'com.fapulous'; // ios bundle id
+const BUNDLE_ID = 'com.hengjia.fapulous'; // ios bundle id
 const PACKAGE = 'com.fapulous'; // android package name
 const NAME = 'Fapulous'; // app name
 const EXPO_ACCOUNT_OWNER = 'sheepcharlie'; // expo account owner

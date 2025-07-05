@@ -5,6 +5,7 @@ import type {
   ChatMessage,
   CommunicationMode,
   FapulousSession,
+  PornQuestionAnswer,
   SessionStatus,
 } from '@/types/session';
 
@@ -20,6 +21,7 @@ type SessionStore = {
   createSession: (selectedMoods: MoodType[]) => string;
   setCurrentSession: (session: FapulousSession | null) => void;
   setCommunicationMode: (mode: CommunicationMode) => void;
+  setPornQuestionAnswer: (answer: PornQuestionAnswer) => void;
   addMessage: (content: string, role: 'user' | 'assistant') => void;
   updateSessionStatus: (status: SessionStatus) => void;
   setAffirmation: (affirmation: string) => void;
@@ -126,6 +128,19 @@ const updateSessionStatusAction =
     }
   };
 
+// Helper function to set porn question answer
+const setPornQuestionAnswerAction = (set: any, get: any) => (answer: PornQuestionAnswer) => {
+  const { currentSession } = get();
+  if (currentSession) {
+    set({
+      currentSession: {
+        ...currentSession,
+        pornQuestionAnswer: answer,
+      },
+    });
+  }
+};
+
 // Helper function to set affirmation with logging
 const setAffirmationAction = (set: any, get: any) => (affirmation: string) => {
   const { currentSession } = get();
@@ -169,6 +184,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       });
     }
   },
+  setPornQuestionAnswer: setPornQuestionAnswerAction(set, get),
   addMessage: addMessageAction(set, get),
   updateSessionStatus: updateSessionStatusAction(set, get),
   setAffirmation: setAffirmationAction(set, get),
